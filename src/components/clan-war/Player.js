@@ -22,9 +22,7 @@ export class Player extends React.Component {
         let playerContent;
 
         if (haveData) {
-            playerContent = <Meta title={this.state.value.name} description={this.state.value.power}/>
-
-
+            playerContent = <Meta title={this.state.value.name} description={this.state.value.class.label + " / " + this.state.value.power}/>
         } else {
             playerContent = <Meta title="Add Player"/>
         }
@@ -60,7 +58,7 @@ export class Player extends React.Component {
 
             console.log('Received values of form: ', formValues);
             this.setState({
-                value: formValues,
+                value: formValues.player,
             })
 
             this.props.onChange(formValues, this.props.playerIndex);

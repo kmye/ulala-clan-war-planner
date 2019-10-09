@@ -1,14 +1,19 @@
 import React from "react";
-import {Form, Input} from 'antd';
+import {Form, Input, Select} from 'antd';
 import Modal from "antd/lib/modal";
+import ULALA_CLASSES from "../../constants/ulalaClasses";
 
-export const PlayerInputForm = Form.create({name: 'form_in_modal'})(
+export const PlayerInputForm = Form.create({
+
+})(
     class extends React.Component {
 
         render() {
-            const {visible, form, onSave, onCancel} = this.props;
+            const {visible, form, onSave, onCancel, player} = this.props;
             const {getFieldDecorator} = form;
 
+            console.log("render player", player)
+            console.log("getFieldDecorator", getFieldDecorator)
             return (
                 <Modal
                     title="Input Player Data"
@@ -19,14 +24,33 @@ export const PlayerInputForm = Form.create({name: 'form_in_modal'})(
 
                     <Form layout="vertical">
                         <Form.Item label="Name">
-                            {getFieldDecorator('name', {
-                                rules: [{ required: true, message: 'Player name is required.' }],
-                            })(<Input />)}
+                            {getFieldDecorator('player.name', {
+                                rules: [{required: true, message: 'Player name is required.'}],
+                            })(<Input/>)}
                         </Form.Item>
                         <Form.Item label="Power">
-                            {getFieldDecorator('power', {
-                                rules: [{ required: true, message: 'Power is required.' }],
-                            })(<Input />)}
+                            {getFieldDecorator('player.power', {
+                                rules: [{required: true, message: 'Power is required.'}],
+                            })(<Input/>)}
+                        </Form.Item>
+
+                        <Form.Item label="Class">
+                            {getFieldDecorator('player.class', {
+                                rules: [{required: true, message: 'Class is required.'}],
+                            })(<Select
+                                showSearch
+                                labelInValue
+                                style={{width: 200}}
+                                placeholder="Select class"
+                                optionFilterProp="children"
+                                filterOption={(input, option) =>
+                                    option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                                }
+                            >
+                                {ULALA_CLASSES.map((item) => {
+                                    return <Select.Option key={item.id} value={item.id}>{item.name}</Select.Option>
+                                })}
+                            </Select>)}
                         </Form.Item>
                     </Form>
                 </Modal>
