@@ -1,0 +1,11 @@
+.ant-layout-sider-custom {
+    background: white;
+    overflow: auto;
+    height: 100vh;
+    position: fixed;
+    left: 0px;
+    flex: 0 0 300px;
+    max-width: 300px;
+    min-width: 300px;
+    width: 300px;
+}

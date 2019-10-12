@@ -1,7 +1,6 @@
 import React from 'react';
-import {Player} from './Player.js';
+import {PlayerCard} from '../player/PlayerCard.js';
 import {Card, Col, Row} from 'antd';
-
 
 export class Team extends React.Component {
 
@@ -39,8 +38,8 @@ export class Team extends React.Component {
     renderPlayer(index) {
         return (
             <Col key={index}>
-                <Player playerIndex={index} value={this.state.players[index]}
-                        onChange={this.onPlayerDataChange}/>
+                <PlayerCard playerIndex={index} value={this.state.players[index]}
+                            onChange={this.onPlayerDataChange}/>
             </Col>
         );
     }
@@ -69,3 +68,4 @@ export class Team extends React.Component {
         return totalPower;
     }
 }
+
