@@ -1,37 +1,52 @@
 import React from 'react';
 import {Button, Card} from "antd";
+import {useDrag} from "react-dnd";
+import {ItemTypes} from "../../constants/dragItemTypes";
 
 const {Meta} = Card;
 
-export class PlayerCard extends React.Component {
+export function PlayerCard(props) {
 
-    onUpdatePlayerClick = () => {
-        this.props.onUpdatePlayerClick(this.props.value);
+    const onUpdatePlayerClick = () => {
+        let player = props.value;
+        player.playerIndex = props.playerIndex;
+        props.onUpdatePlayerClick(player);
     };
 
-    onDeletePlayerClick = () => {
-        this.props.onDeletePlayerClick(this.props.value.playerId);
+    const onDeletePlayerClick = () => {
+        props.onDeletePlayerClick(props.playerIndex);
     };
 
-    render() {
-        let actions = <span>
-            <Button type="dashed" icon="edit" onClick={this.onUpdatePlayerClick}/>
-            <Button type="dashed" icon="delete" onClick={this.onDeletePlayerClick}/>
+    const [{isDragging}, drag] = useDrag({
+        item: {
+            type: ItemTypes.PLAYER,
+            playerObject: props.value
+        },
+        collect: monitor => ({
+            isDragging: !!monitor.isDragging(),
+        }),
+    })
+
+    const actions = <span>
+            <Button type="dashed" icon="edit" onClick={onUpdatePlayerClick}/>
+            <Button type="dashed" icon="delete" onClick={onDeletePlayerClick}/>
         </span>
 
-        return (
-            <div>
-                <Card
-                    hoverable
-                    style={{width: "auto", marginTop:5}}
-                    title={this.props.value.name}
-                    extra={actions}
-                >
-                    <Meta title={this.props.value.class.label}
-                          description={this.props.value.power}/>
-                </Card>
-            </div>
-        );
-    }
+    return (
+        <div ref={drag}
+             style={{
+                 opacity: isDragging ? 0.5 : 1,
+                 cursor: 'move'
+             }}>
+            <Card
+                style={{width: "auto", marginTop: 5}}
+                title={"(" + (props.playerIndex + 1) + ") " + props.value.name}
+                extra={actions}
+            >
+                <Meta title={props.value.class.label}
+                      description={props.value.power}/>
+            </Card>
+        </div>
+    );
 }
 

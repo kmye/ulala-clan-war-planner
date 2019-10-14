@@ -3,17 +3,51 @@ import './App.css';
 import 'antd/dist/antd.css';
 import {connect} from "react-redux";
 import {Layout} from "antd";
-import ClanWarPlanner from "../clan-war/ClanWarPlanner";
+import PlayerList from "../player/PlayerList";
+import TeamList from "../team/TeamList";
+import {DndProvider} from "react-dnd";
+import HTML5Backend from 'react-dnd-html5-backend'
 
-const {Header, Footer, Content} = Layout;
+const {Header, Footer, Sider, Content} = Layout;
 
 function App() {
     return (
+        <DndProvider backend={HTML5Backend}>
         <Layout>
-            <Header className="header" style={{background: "antiquewhite"}}><h2>Ulala Clan War Planner</h2></Header>
-            <Content style={{padding: '0 24px', minHeight: 800}}><ClanWarPlanner/></Content>
-            <Footer style={{textAlign: 'center'}}>Developed by kmye ©2019</Footer>
+            <Sider width={300}
+                   style={{
+                       background: '#fff',
+                       overflow: 'auto',
+                       height: '100vh',
+                       position: 'fixed',
+                       left: 0
+
+                   }}>
+                <PlayerList/>
+            </Sider>
+
+            <Layout style={{
+                marginLeft: 300,
+                height: '100vh'
+            }}>
+
+                <Header className="header" style={{background: "antiquewhite"}}><h2>Ulala Clan War Planner</h2></Header>
+
+                <Content style={{
+                    margin: '20px',
+                    padding: '20px',
+                    background: 'white',
+                    overflow: 'auto'}}>
+
+                   <TeamList/>
+
+                </Content>
+
+                <Footer style={{textAlign: 'center'}}>Developed by kmye ©2019</Footer>
+            </Layout>
+
         </Layout>
+        </DndProvider>
 
     );
 }
