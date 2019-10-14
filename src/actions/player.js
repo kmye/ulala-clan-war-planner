@@ -1,5 +1,5 @@
 import {
-    PLAYER_ADD, PLAYER_ASSIGN_TEAM,
+    PLAYER_ADD,
     PLAYER_DELETE,
     PLAYER_FORM_CLOSE,
     PLAYER_FORM_OPEN,
@@ -42,15 +42,6 @@ export const deletePlayer = playerIndex => ({
         id: playerIndex
     }
 });
-
-export const assignPlayerTeam = (player, team) => ({
-    type: PLAYER_ASSIGN_TEAM,
-    payload: {
-        player: player,
-        team: team
-    }
-});
-
 
 export const openForm = (player) => ({
     type: PLAYER_FORM_OPEN,

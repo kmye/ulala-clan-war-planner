@@ -15,11 +15,24 @@ export function TeamCard(props) {
         }),
     });
 
-    if (props.team != null && props.team.length > 0) {
-        props.team.players.forEach(function (element) {
-            teamPower += element ? element.power : 0;
+    let playersInterface = [];
+    if (props.team.players != null) {
+
+        props.team.players.forEach(function (element, index) {
+            teamPower += element ? parseInt(element.power) : 0;
+
+            let playerRepresentation;
+
+            if (element != null) {
+                playerRepresentation = <span><Icon type="user"/>{element.playerIndex + 1}</span>
+            } else {
+                playerRepresentation = <Icon type="question"/>
+            }
+
+            playersInterface.push(<Col key={index} span={6}>{playerRepresentation}</Col>)
         });
     }
+
 
     return (
         <div ref={drop}>
@@ -29,16 +42,8 @@ export function TeamCard(props) {
                 }}
                 title={"Team " + (props.team.teamIndex + 1 + " / Power: " + teamPower)}>
                 <Row>
-                    {props.team.players.map((value, index) => {
-                        let playerRepresentation;
-                        if(value) {
-                            playerRepresentation = <Icon type="user" />
-                        } else {
-                            playerRepresentation = <Icon type="question" />
-                        }
-                        return (
-                            <Col key={index} span={6}>{playerRepresentation}</Col>
-                        )
+                    {playersInterface.map((element) => {
+                        return element
                     })}
                 </Row>
             </Card>

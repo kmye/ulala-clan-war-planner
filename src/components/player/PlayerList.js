@@ -29,7 +29,7 @@ class PlayerList extends React.Component {
     };
 
     savePlayerInfo = (formValues, isUpdateMode) => {
-        isUpdateMode ? this.props.updatePlayer(formValues) :  this.props.addPlayer(formValues);
+        isUpdateMode ? this.props.updatePlayer(formValues) : this.props.addPlayer(formValues);
         this.props.closeForm();
     };
 
@@ -44,7 +44,6 @@ class PlayerList extends React.Component {
 
     render() {
 
-        console.log("render player list")
         let players = "";
 
         if (this.props.players != null) {

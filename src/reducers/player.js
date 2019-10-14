@@ -1,4 +1,4 @@
-import {PLAYER_ADD, PLAYER_ASSIGN_TEAM, PLAYER_DELETE, PLAYER_INIT, PLAYER_UPDATE} from "../constants/actionTypes";
+import {PLAYER_ADD, PLAYER_DELETE, PLAYER_INIT, PLAYER_UPDATE} from "../constants/actionTypes";
 import {PLAYER_MASTER} from "../constants/localStorage";
 
 
@@ -35,11 +35,12 @@ export default (state = {}, action) => {
         }
 
         case PLAYER_UPDATE: {
-            state.players[action.payload.player.playerIndex] = action.payload.player;
-            storePlayersInLocalStorage(state.players);
+            let filtered = removePlayerIdFromArray(action.payload.id, state.players);
+            filtered[action.payload.player.playerIndex] = action.payload.player;
+            storePlayersInLocalStorage(filtered);
             return {
                 ...state,
-                players: state.players
+                players: filtered
             };
         }
 
@@ -52,17 +53,7 @@ export default (state = {}, action) => {
             };
         }
 
-        case PLAYER_ASSIGN_TEAM: {
-            const {player, team} = action.payload;
-            player.teamIndex = team.teamIndex;
-            player.teamType = team.teamType;
-            state.players[action.payload.player.playerIndex] = player;
-            storePlayersInLocalStorage(state.players);
-            return {
-                ...state,
-                players: state.players
-            }
-        }
+
         default:
             return state;
     }
