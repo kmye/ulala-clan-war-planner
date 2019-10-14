@@ -1,5 +1,9 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+This is a simple app used to manage and organize players into clan war teams.
+
+This project is still work in progress.
+
 ## Available Scripts
 
 In the project directory, you can run:
