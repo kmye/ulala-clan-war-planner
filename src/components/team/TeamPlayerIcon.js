@@ -7,7 +7,6 @@ import {ItemTypes} from "../../constants/dragItemTypes";
 export function TeamPlayerIcon(props) {
 
     let playerRepresentation;
-
     let {player} = props;
 
     const [{isDragging}, drag] = useDrag({
@@ -18,7 +17,7 @@ export function TeamPlayerIcon(props) {
         collect: monitor => ({
             isDragging: !!monitor.isDragging(),
         }),
-    })
+    });
 
     if (player != null) {
         let popoverContent = <PlayerCard value={player}/>
@@ -30,7 +29,6 @@ export function TeamPlayerIcon(props) {
                  }}>
                 <Popover
                     content={popoverContent}
-
                     trigger="hover"><Icon type="user"/>{player.playerIndex + 1}</Popover>
             </div>
     } else {

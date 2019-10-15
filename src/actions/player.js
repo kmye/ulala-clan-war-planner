@@ -3,7 +3,8 @@ import {
     PLAYER_DELETE,
     PLAYER_FORM_CLOSE,
     PLAYER_FORM_OPEN,
-    PLAYER_INIT, PLAYER_SORT_BY_POWER,
+    PLAYER_INIT,
+    PLAYER_SORT_BY_POWER,
     PLAYER_UPDATE
 } from "../constants/actionTypes";
 
