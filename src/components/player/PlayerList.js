@@ -71,7 +71,7 @@ class PlayerList extends React.Component {
                             onDeletePlayerClick={this.deletePlayerClick}/>
             ));
 
-            additionalActions = <Col push={18}>
+            additionalActions = <Col>
                 <Button type="default" icon="sort-ascending" onClick={this.sortPlayersAscending}/>
                 <Button type="default" icon="sort-descending" onClick={this.sortPlayersDescending}/>
             </Col>
