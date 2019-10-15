@@ -11,10 +11,13 @@ import HTML5Backend from 'react-dnd-html5-backend'
 const {Header, Footer, Sider, Content} = Layout;
 
 function App() {
+
+    const siderWidth = 320
+
     return (
         <DndProvider backend={HTML5Backend}>
         <Layout>
-            <Sider width={320}
+            <Sider width={siderWidth}
                    style={{
                        background: '#fff',
                        overflow: 'auto',
@@ -27,14 +30,14 @@ function App() {
             </Sider>
 
             <Layout style={{
-                marginLeft: 320,
+                marginLeft: siderWidth,
                 height: '100vh'
             }}>
 
                 <Header className="header" style={{background: "antiquewhite"}}><h2>Ulala Clan War Planner</h2></Header>
 
                 <Content style={{
-                    margin: '20px',
+                    margin: '10px',
                     padding: '20px',
                     background: 'white',
                     overflow: 'auto'}}>
@@ -43,7 +46,7 @@ function App() {
 
                 </Content>
 
-                <Footer style={{textAlign: 'center'}}>Developed by kmye ©2019</Footer>
+                <Footer className="custom-footer">Developed by kmye ©2019</Footer>
             </Layout>
 
         </Layout>

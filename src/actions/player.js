@@ -1,5 +1,5 @@
 import {
-    PLAYER_ADD,
+    PLAYER_ADD, PLAYER_CLEAR,
     PLAYER_DELETE,
     PLAYER_FORM_CLOSE,
     PLAYER_FORM_OPEN,
@@ -11,6 +11,10 @@ import {
 export const initPlayers = () => ({
     type: PLAYER_INIT
 });
+
+export const clearPlayers = () => ({
+    type: PLAYER_CLEAR
+})
 
 export const addPlayer = player => ({
     type: PLAYER_ADD,

@@ -1,4 +1,11 @@
-import {PLAYER_ADD, PLAYER_DELETE, PLAYER_INIT, PLAYER_SORT_BY_POWER, PLAYER_UPDATE} from "../constants/actionTypes";
+import {
+    PLAYER_ADD,
+    PLAYER_CLEAR,
+    PLAYER_DELETE,
+    PLAYER_INIT,
+    PLAYER_SORT_BY_POWER,
+    PLAYER_UPDATE
+} from "../constants/actionTypes";
 import {PLAYER_MASTER} from "../constants/localStorage";
 
 function storePlayersInLocalStorage(players) {
@@ -52,6 +59,14 @@ export default (state = {}, action) => {
                 ...state,
                 players: localStoragePlayers == null ? [] : JSON.parse(localStoragePlayers)
             };
+        }
+
+        case PLAYER_CLEAR: {
+            localStorage.setItem(PLAYER_MASTER, null);
+            return {
+                ...state,
+                players: []
+            }
         }
 
         case PLAYER_ADD: {

@@ -1,9 +1,10 @@
 import React from "react";
-import {Button, Col, Divider, Empty, Row} from "antd";
+import {Button, Col, Divider, Empty, message, Row, Upload} from "antd";
 import {PlayerInputForm} from "./PlayerInputForm";
 import {connect} from "react-redux";
 import {
     addPlayer,
+    clearPlayers,
     closeForm,
     deletePlayer,
     initPlayers,
@@ -13,6 +14,7 @@ import {
 } from "../../actions/player";
 import {PlayerCard} from "./PlayerCard";
 import {ExportToCsv} from "export-to-csv";
+import {getClassByName} from "../../constants/ulalaClasses";
 
 const mapStateToProps = state => ({
     ...state.playerInputForm,
@@ -58,6 +60,11 @@ class PlayerList extends React.Component {
         this.props.sortPlayersByPower(false)
     };
 
+    autoAssign = () => {
+        // TODO
+        message.loading("Work in progress...");
+    };
+
     exportData = () => {
         // export all player data to csv
         const formattedData = this.props.players.map((item) => {
@@ -83,11 +90,75 @@ class PlayerList extends React.Component {
         csvExporter.generateCsv(formattedData);
     };
 
-    renderAddPlayerButton() {
+    renderAddPlayerButton = () => {
+
+        let props = this.props;
+
+        const processCsvFile = (rawData) => {
+            let dataRows = rawData.split(/\n/g,);
+            let isFirstRow = true;
+
+            props.clearPlayers();
+            dataRows.forEach(function (element) {
+                if (isFirstRow) {
+                    isFirstRow = false;
+                } else {
+                    let playerData = element.split(",");
+                    if (playerData.length === 3) {
+                        // insert as player data
+                        const playerName = playerData[0].replace(/"/g, "");
+                        const playerPower = playerData[1].replace(/"/g, "");
+                        const playerClass = playerData[2].replace(/"/g, "");
+
+                        let player = {
+                            name: playerName,
+                            power: playerPower,
+                            class: getClassByName(playerClass)
+                        };
+
+                        props.addPlayer(player)
+                    }
+                }
+            })
+        };
+
+        const fileUploadProps = {
+            name: "file",
+            accept: '.csv,application/vnd.ms-excel',
+            action: '#',
+            showUploadList: false,
+            onChange(info) {
+                if (info.file.status !== 'uploading') {
+                    let reader = new FileReader();
+                    reader.addEventListener('load', function (e) {
+                        processCsvFile(e.target.result)
+                    });
+
+                    reader.readAsText(info.file);
+                }
+                if (info.file.status === 'done') {
+                    console.log("done")
+                } else if (info.file.status === 'error') {
+                    message.error("Oops, there is an error.");
+                }
+            },
+            beforeUpload(file) {
+                return false
+            },
+        };
+
         return (
-            <Button type="primary" block icon="plus" shape="round" onClick={this.openPlayerInputForm}>
-                Add Player
-            </Button>
+            <Row gutter={8}>
+                <Col span={12}>
+                    <Button type="primary" icon="plus" shape="round"
+                            onClick={this.openPlayerInputForm}>Add</Button>
+                </Col>
+                <Col span={12}>
+                    <Upload {...fileUploadProps}>
+                        <Button type="primary" icon="import" shape="round">Import</Button>
+                    </Upload>
+                </Col>
+            </Row>
         );
     }
 
@@ -112,7 +183,8 @@ class PlayerList extends React.Component {
                 <Col>
                     <Button type="default" icon="sort-ascending" onClick={this.sortPlayersAscending}/>
                     <Button type="default" icon="sort-descending" onClick={this.sortPlayersDescending}/>
-                    <Button type="default" icon="export" onClick={this.exportData}/>
+                    <Button type="default" icon="solution" onClick={this.autoAssign}/>
+                    <Button type="default" icon="export" onClick={this.exportData}>Export to CSV</Button>
                 </Col>
         } else {
             players =
@@ -124,8 +196,8 @@ class PlayerList extends React.Component {
         }
 
         return (
-            <div style={{padding: '5px 20px'}}>
-                <h3>Players ({havePlayers && totalPlayers + "/80"})</h3>
+            <div style={{padding: '20px 20px'}}>
+                <h3>Players{havePlayers && ("(" + totalPlayers + "/80)")}</h3>
                 {havePlayers && this.renderAddPlayerButton()}
                 <Divider/>
                 <Row>{additionalActions}</Row>
@@ -151,5 +223,6 @@ export default connect(mapStateToProps, {
     addPlayer,
     updatePlayer,
     deletePlayer,
+    clearPlayers,
     sortPlayersByPower
 })(PlayerList)

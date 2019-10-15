@@ -1,9 +1,8 @@
 import React from 'react';
-import {Button, Card, Popconfirm} from "antd";
+import {Button, Card, Col, Popconfirm, Row, Tag} from "antd";
 import {useDrag} from "react-dnd";
 import {ItemTypes} from "../../constants/dragItemTypes";
-
-const {Meta} = Card;
+import {ULALA_CLASS_TAG_COLORS} from "../../constants/ulalaClasses";
 
 export function PlayerCard(props) {
 
@@ -39,6 +38,13 @@ export function PlayerCard(props) {
              </Popconfirm>
         </span>
 
+    let playerColor = ULALA_CLASS_TAG_COLORS[props.value.class.key - 1];
+
+    let playerDescription =
+        <div style={{position: "absolute", right: 0}}>
+            <Tag color={playerColor}>{props.value.class.label}</Tag>
+        </div>
+
     return (
         <div ref={drag}
              style={{
@@ -50,8 +56,10 @@ export function PlayerCard(props) {
                 title={"(" + (props.value.playerIndex + 1) + ") " + props.value.name}
                 extra={actions}
             >
-                <Meta title={props.value.class.label}
-                      description={props.value.power.toLocaleString()}/>
+                <Row>
+                    <Col span={12}>{props.value.power.toLocaleString()}</Col>
+                    <Col span={12}>{playerDescription}</Col>
+                </Row>
             </Card>
         </div>
     );

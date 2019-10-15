@@ -3,6 +3,7 @@ import {Col, Icon, Popover} from "antd";
 import {PlayerCard} from "../player/PlayerCard";
 import {useDrag} from "react-dnd";
 import {ItemTypes} from "../../constants/dragItemTypes";
+import {ULALA_CLASS_TAG_COLORS} from "../../constants/ulalaClasses";
 
 export function TeamPlayerIcon(props) {
 
@@ -21,6 +22,8 @@ export function TeamPlayerIcon(props) {
 
     if (player != null) {
         let popoverContent = <PlayerCard value={player}/>
+        let playerColor = ULALA_CLASS_TAG_COLORS[player.class.key - 1];
+
         playerRepresentation =
             <div ref={drag}
                  style={{
@@ -29,7 +32,8 @@ export function TeamPlayerIcon(props) {
                  }}>
                 <Popover
                     content={popoverContent}
-                    trigger="hover"><Icon type="user"/>{player.playerIndex + 1}</Popover>
+                    trigger="hover"><Icon style={{color: playerColor}} type="smile"/> {player.playerIndex + 1}
+                </Popover>
             </div>
     } else {
         playerRepresentation = <Icon type="question"/>
