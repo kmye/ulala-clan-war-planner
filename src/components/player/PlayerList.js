@@ -1,8 +1,16 @@
 import React from "react";
-import {Button} from "antd";
+import {Button, Col, Divider, Empty, Row} from "antd";
 import {PlayerInputForm} from "./PlayerInputForm";
 import {connect} from "react-redux";
-import {addPlayer, closeForm, deletePlayer, initPlayers, openForm, updatePlayer} from "../../actions/player";
+import {
+    addPlayer,
+    closeForm,
+    deletePlayer,
+    initPlayers,
+    openForm,
+    sortPlayersByPower,
+    updatePlayer
+} from "../../actions/player";
 import {PlayerCard} from "./PlayerCard";
 
 const mapStateToProps = state => ({
@@ -38,22 +46,37 @@ class PlayerList extends React.Component {
     };
 
     deletePlayerClick = (playerIndex) => {
-        // TODO dialog prompt for deletion
         this.props.deletePlayer(playerIndex)
+    };
+
+    sortPlayersAscending = () => {
+        this.props.sortPlayersByPower(true)
+    };
+
+    sortPlayersDescending = () => {
+        this.props.sortPlayersByPower(false)
     };
 
     render() {
 
         let players = "";
+        let additionalActions = ""
 
-        if (this.props.players != null) {
+        if (this.props.players != null && this.props.players.length > 0) {
             players = this.props.players.map((item, index) => (
                 <PlayerCard key={index}
                             value={item}
                             shouldRenderActions={true}
                             onUpdatePlayerClick={this.updatePlayerClick}
                             onDeletePlayerClick={this.deletePlayerClick}/>
-            ))
+            ));
+
+            additionalActions = <Col push={18}>
+                <Button type="default" icon="sort-ascending" onClick={this.sortPlayersAscending}/>
+                <Button type="default" icon="sort-descending" onClick={this.sortPlayersDescending}/>
+            </Col>
+        } else {
+            players = <div style={{display: "flex", alignItems: "center", height: "80vh"}}><Empty/></div>
         }
 
         return (
@@ -62,8 +85,11 @@ class PlayerList extends React.Component {
                 <Button type="primary" block icon="plus" shape="round" onClick={this.openPlayerInputForm}>
                     Add Player
                 </Button>
-                <br/>
-                {players}
+                <Divider/>
+                <Row>{additionalActions}</Row>
+                <Row type="flex" justify="space-around" align="top">
+                    <Col>{players}</Col>
+                </Row>
                 <PlayerInputForm wrappedComponentRef={this.formRef}
                                  playerInput={this.props.playerInput}
                                  onSave={this.savePlayerInfo}
@@ -73,6 +99,7 @@ class PlayerList extends React.Component {
         )
     }
 
+
 };
 
 export default connect(mapStateToProps, {
@@ -81,5 +108,6 @@ export default connect(mapStateToProps, {
     initPlayers,
     addPlayer,
     updatePlayer,
-    deletePlayer
+    deletePlayer,
+    sortPlayersByPower
 })(PlayerList)

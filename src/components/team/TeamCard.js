@@ -1,5 +1,5 @@
 import React from 'react';
-import {Card, Col, Icon, Row} from 'antd';
+import {Badge, Card, Col, Icon, Row, Tooltip} from 'antd';
 import {useDrop} from "react-dnd";
 import {ItemTypes} from "../../constants/dragItemTypes";
 import {TeamPlayerIcon} from "./TeamPlayerIcon";
@@ -37,11 +37,14 @@ export function TeamCard(props) {
 
     return (
         <div ref={drop}>
+
             <Card
                 style={{
+                    width: "auto",
                     background: isOver ? "#f6ffed" : "white",
                 }}
-                title={"Team " + (props.team.teamIndex + 1 + " / Power: " + teamPower)}>
+                extra={<Tooltip placement="top" title="Power"><Badge count={teamPower.toLocaleString()} overflowCount={99999999} style={{ backgroundColor: '#52c41a' }}/></Tooltip>}
+                title={"Team " + (props.team.teamIndex + 1 )}>
                 <Row>
                     {
                         props.team.players.map((element, index) => {

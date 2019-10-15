@@ -34,9 +34,11 @@ class TeamList extends React.Component {
     }
 
     renderTeam(teams) {
+        let isEliteTeam = teams && teams.length === 1;
+
         return (
             teams.map((item, index) => (
-                <Col span={12} key={index}>
+                <Col span={!isEliteTeam ? 12 : 24} key={index}>
                     <TeamCard team={item}
                               updatePlayerToTeam={this.updatePlayerToTeam}/>
                 </Col>
@@ -62,22 +64,22 @@ class TeamList extends React.Component {
                  type="flex"
                  justify="space-around"
                  align="top">
-                <Col span={8}>
+                <Col span={9}>
                     <h3>Defense</h3>
                     <Row gutter={16}>
-                    {this.renderTeam(defenseTeamTemplates)}
+                        {this.renderTeam(defenseTeamTemplates)}
                     </Row>
                 </Col>
-                <Col span={8}>
+                <Col span={6}>
                     <h3>Elite</h3>
                     <Row gutter={16}>
-                    {this.renderTeam(eliteTeamTemplates)}
+                        {this.renderTeam(eliteTeamTemplates)}
                     </Row>
                 </Col>
-                <Col span={8}>
+                <Col span={9}>
                     <h3>Attack</h3>
                     <Row gutter={16}>
-                    {this.renderTeam(attackTeamTemplates)}
+                        {this.renderTeam(attackTeamTemplates)}
                     </Row>
                 </Col>
             </Row>

@@ -3,7 +3,7 @@ import {
     PLAYER_DELETE,
     PLAYER_FORM_CLOSE,
     PLAYER_FORM_OPEN,
-    PLAYER_INIT,
+    PLAYER_INIT, PLAYER_SORT_BY_POWER,
     PLAYER_UPDATE
 } from "../constants/actionTypes";
 
@@ -31,6 +31,13 @@ export const deletePlayer = playerIndex => ({
         playerIndex: playerIndex
     }
 });
+
+export const sortPlayersByPower = sortType => ({
+    type: PLAYER_SORT_BY_POWER,
+    payload: {
+        sortType: sortType
+    }
+})
 
 export const openForm = (player) => ({
     type: PLAYER_FORM_OPEN,

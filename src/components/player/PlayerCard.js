@@ -1,5 +1,5 @@
 import React from 'react';
-import {Button, Card} from "antd";
+import {Button, Card, Popconfirm} from "antd";
 import {useDrag} from "react-dnd";
 import {ItemTypes} from "../../constants/dragItemTypes";
 
@@ -25,9 +25,18 @@ export function PlayerCard(props) {
         }),
     })
 
-    const actions = props.shouldRenderActions && <span>
+    const actions = props.shouldRenderActions &&
+        <span>
             <Button type="dashed" icon="edit" onClick={onUpdatePlayerClick}/>
-            <Button type="dashed" icon="delete" onClick={onDeletePlayerClick}/>
+             <Popconfirm
+                 title="Are you sure delete this record?"
+                 onConfirm={onDeletePlayerClick}
+                 onCancel={() => {
+                 }}
+                 okText="Yes"
+                 cancelText="No">
+                 <Button type="dashed" icon="delete"/>
+             </Popconfirm>
         </span>
 
     return (
@@ -42,7 +51,7 @@ export function PlayerCard(props) {
                 extra={actions}
             >
                 <Meta title={props.value.class.label}
-                      description={props.value.power}/>
+                      description={props.value.power.toLocaleString()}/>
             </Card>
         </div>
     );

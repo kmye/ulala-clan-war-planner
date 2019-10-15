@@ -1,4 +1,4 @@
-import {PLAYER_ADD, PLAYER_DELETE, PLAYER_INIT, PLAYER_UPDATE} from "../constants/actionTypes";
+import {PLAYER_ADD, PLAYER_DELETE, PLAYER_INIT, PLAYER_SORT_BY_POWER, PLAYER_UPDATE} from "../constants/actionTypes";
 import {PLAYER_MASTER} from "../constants/localStorage";
 
 function storePlayersInLocalStorage(players) {
@@ -29,6 +29,19 @@ function updatePlayerInArray(player, arrayList) {
             ...player
         }
     })
+}
+
+function sortPlayers(players, sortAscending) {
+    let sorted = players.sort(function (a, b) {
+        return (sortAscending) ? (a.power - b.power) : (b.power) - (a.power);
+    });
+
+    return sorted.map((item, index) => {
+        item.playerIndex = index;
+        return item;
+    });
+
+    return sorted;
 }
 
 export default (state = {}, action) => {
@@ -73,6 +86,14 @@ export default (state = {}, action) => {
             };
         }
 
+        case PLAYER_SORT_BY_POWER:
+            const sortType = action.payload.sortType;
+            let sorted = sortPlayers(state.players, sortType);
+            storePlayersInLocalStorage(sorted);
+            return {
+                ...state,
+                players: sorted
+            };
 
         default:
             return state;

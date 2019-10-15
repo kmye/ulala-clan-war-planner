@@ -46,7 +46,7 @@ export const PlayerInputForm = Form.create({
 
                 const isUpdateMode = playerInput != null;
 
-                if(isUpdateMode) {
+                if (isUpdateMode) {
                     formValues.playerIndex = playerInput.playerIndex;
                     formValues.teamType = playerInput.teamType;
                     formValues.teamIndex = playerInput.teamIndex;
@@ -75,13 +75,16 @@ export const PlayerInputForm = Form.create({
                     <Form layout="vertical">
                         <Form.Item label="Name">
                             {getFieldDecorator('name', {
-                                rules: [{required: true, message: 'Player name is required.'}],
-                            })(<Input/>)}
+                                rules: [
+                                    {required: true, message: 'Player name is required.'},
+                                    {pattern: new RegExp('^\\w*$'), message: 'Player name must be alphanumeric input only.'},
+                                ],
+                            })(<Input allowClear/>)}
                         </Form.Item>
                         <Form.Item label="Power">
                             {getFieldDecorator('power', {
                                 rules: [{required: true, message: 'Power is required.'}],
-                            })(<InputNumber min={1}  />)}
+                            })(<InputNumber min={1}/>)}
                         </Form.Item>
 
                         <Form.Item label="Class">
