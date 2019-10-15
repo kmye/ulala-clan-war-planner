@@ -40,8 +40,6 @@ function sortPlayers(players, sortAscending) {
         item.playerIndex = index;
         return item;
     });
-
-    return sorted;
 }
 
 export default (state = {}, action) => {

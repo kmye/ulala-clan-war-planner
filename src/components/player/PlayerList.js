@@ -12,6 +12,7 @@ import {
     updatePlayer
 } from "../../actions/player";
 import {PlayerCard} from "./PlayerCard";
+import {ExportToCsv} from "export-to-csv";
 
 const mapStateToProps = state => ({
     ...state.playerInputForm,
@@ -57,12 +58,49 @@ class PlayerList extends React.Component {
         this.props.sortPlayersByPower(false)
     };
 
+    exportData = () => {
+        // export all player data to csv
+        const formattedData = this.props.players.map((item) => {
+            return {
+                name: item.name,
+                power: item.power,
+                class: item.class.label
+            }
+        });
+
+        const options = {
+            fieldSeparator: ',',
+            quoteStrings: '"',
+            decimalSeparator: '.',
+            showLabels: true,
+            showTitle: false,
+            useTextFile: false,
+            useBom: true,
+            useKeysAsHeaders: true,
+        };
+        const csvExporter = new ExportToCsv(options);
+
+        csvExporter.generateCsv(formattedData);
+    };
+
+    renderAddPlayerButton() {
+        return (
+            <Button type="primary" block icon="plus" shape="round" onClick={this.openPlayerInputForm}>
+                Add Player
+            </Button>
+        );
+    }
+
     render() {
 
         let players = "";
-        let additionalActions = ""
+        let additionalActions = "";
+        let totalPlayers = 0;
 
-        if (this.props.players != null && this.props.players.length > 0) {
+        const havePlayers = this.props.players != null && this.props.players.length > 0;
+
+        if (havePlayers) {
+            totalPlayers = this.props.players.length;
             players = this.props.players.map((item, index) => (
                 <PlayerCard key={index}
                             value={item}
@@ -70,21 +108,25 @@ class PlayerList extends React.Component {
                             onUpdatePlayerClick={this.updatePlayerClick}
                             onDeletePlayerClick={this.deletePlayerClick}/>
             ));
-
-            additionalActions = <Col>
-                <Button type="default" icon="sort-ascending" onClick={this.sortPlayersAscending}/>
-                <Button type="default" icon="sort-descending" onClick={this.sortPlayersDescending}/>
-            </Col>
+            additionalActions =
+                <Col>
+                    <Button type="default" icon="sort-ascending" onClick={this.sortPlayersAscending}/>
+                    <Button type="default" icon="sort-descending" onClick={this.sortPlayersDescending}/>
+                    <Button type="default" icon="export" onClick={this.exportData}/>
+                </Col>
         } else {
-            players = <div style={{display: "flex", alignItems: "center", height: "80vh"}}><Empty/></div>
+            players =
+                <div style={{display: "flex", alignItems: "center", height: "80vh"}}>
+                    <Empty description={"Get started by adding players."}>
+                        {this.renderAddPlayerButton()}
+                    </Empty>
+                </div>
         }
 
         return (
             <div style={{padding: '5px 20px'}}>
-                <h3>Players</h3>
-                <Button type="primary" block icon="plus" shape="round" onClick={this.openPlayerInputForm}>
-                    Add Player
-                </Button>
+                <h3>Players ({havePlayers && totalPlayers + "/80"})</h3>
+                {havePlayers && this.renderAddPlayerButton()}
                 <Divider/>
                 <Row>{additionalActions}</Row>
                 <Row type="flex" justify="space-around" align="top">
