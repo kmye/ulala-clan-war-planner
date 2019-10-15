@@ -6,10 +6,24 @@ function storePlayersInLocalStorage(players) {
     localStorage.setItem(PLAYER_MASTER, JSON.stringify(players));
 }
 
-function removePlayerIdFromArray(playerId, arrayList) {
+function removePlayerFromArray(playerIndex, arrayList) {
     return arrayList.filter(function (value, index) {
-        return index !== playerId;
+        return index !== playerIndex;
     });
+}
+
+function updatePlayerInArray(player, arrayList) {
+    return arrayList.map((item, index) => {
+        if (index !== player.playerIndex) {
+            return item
+        }
+
+        // Otherwise, this is the one we want - return an updated value
+        return {
+            ...item,
+            ...player
+        }
+    })
 }
 
 export default (state = {}, action) => {
@@ -25,27 +39,26 @@ export default (state = {}, action) => {
         }
 
         case PLAYER_ADD: {
-            action.payload.player.playerId = action.payload.id;
-            state.players.push(action.payload.player);
-            storePlayersInLocalStorage(state.players);
+            let newPlayers = state.players.slice();
+            newPlayers.push(action.payload.player);
+            storePlayersInLocalStorage(newPlayers);
             return {
                 ...state,
-                players: state.players
+                players: newPlayers
             };
         }
 
         case PLAYER_UPDATE: {
-            let filtered = removePlayerIdFromArray(action.payload.id, state.players);
-            filtered[action.payload.player.playerIndex] = action.payload.player;
-            storePlayersInLocalStorage(filtered);
+            let updatedArray = updatePlayerInArray(action.payload.player, state.players);
+            storePlayersInLocalStorage(updatedArray);
             return {
                 ...state,
-                players: filtered
+                players: updatedArray
             };
         }
 
         case PLAYER_DELETE: {
-            let filtered = removePlayerIdFromArray(action.payload.id, state.players);
+            let filtered = removePlayerFromArray(action.payload.playerIndex, state.players);
             storePlayersInLocalStorage(filtered);
             return {
                 ...state,

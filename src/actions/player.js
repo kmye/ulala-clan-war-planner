@@ -6,40 +6,29 @@ import {
     PLAYER_INIT,
     PLAYER_UPDATE
 } from "../constants/actionTypes";
-import {PLAYER_ID} from "../constants/localStorage";
 
 export const initPlayers = () => ({
     type: PLAYER_INIT
 });
 
-let storagePlayerId = localStorage.getItem(PLAYER_ID);
-let playerId = storagePlayerId ? parseInt(storagePlayerId) : 0;
-
-const incrementPlayerId = () => {
-    let newPlayerId = ++playerId;
-    localStorage.setItem(PLAYER_ID, newPlayerId);
-    return newPlayerId
-};
-
-export const addPlayer = content => ({
+export const addPlayer = player => ({
     type: PLAYER_ADD,
     payload: {
-        id: incrementPlayerId(),
-        player: content
+        player: player
     }
 });
 
-export const updatePlayer = (content) => ({
+export const updatePlayer = (player) => ({
     type: PLAYER_UPDATE,
     payload: {
-        player: content
+        player: player
     }
-})
+});
 
 export const deletePlayer = playerIndex => ({
     type: PLAYER_DELETE,
     payload: {
-        id: playerIndex
+        playerIndex: playerIndex
     }
 });
 

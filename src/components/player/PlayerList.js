@@ -37,9 +37,9 @@ class PlayerList extends React.Component {
         this.props.openForm(player);
     };
 
-    deletePlayerClick = (playerId) => {
+    deletePlayerClick = (playerIndex) => {
         // TODO dialog prompt for deletion
-        this.props.deletePlayer(playerId)
+        this.props.deletePlayer(playerIndex)
     };
 
     render() {

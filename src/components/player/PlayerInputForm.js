@@ -48,7 +48,6 @@ export const PlayerInputForm = Form.create({
 
                 if(isUpdateMode) {
                     formValues.playerIndex = player.playerIndex;
-                    formValues.playerId = player.playerId;
                     formValues.teamType = player.teamType;
                     formValues.teamIndex = player.teamIndex;
                 }

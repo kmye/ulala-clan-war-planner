@@ -1,3 +1,7 @@
-export const TEAM_TYPE_DEFENSE = "DEFENSE";
-export const TEAM_TYPE_ATTACK = "ATTACK";
-export const TEAM_TYPE_ELITE = "ELITE";
+export const TeamType = {
+    DEFENSE: "DEFENSE",
+    ATTACK: "ATTACK",
+    ELITE: "ELITE",
+};
+
+

@@ -1,13 +1,13 @@
 import React from "react";
 import {Col, Row} from "antd";
-import {getAttackPlayers, getDefensePlayers, getElitePlayers, getPlayersByTeamIndex} from "../../selector";
+import {getAllPlayers, getPlayersByTeamIndex, getPlayersByTeamType} from "../../selector";
 import {connect} from "react-redux";
 import {TeamCard} from "./TeamCard";
 import {updatePlayer} from "../../actions/player";
-import {TEAM_TYPE_ATTACK, TEAM_TYPE_DEFENSE, TEAM_TYPE_ELITE} from "../../constants/teamTypes";
+import {TeamType} from "../../constants/teamTypes";
 
 const mapStateToProps = state => ({
-    ...state.player
+    players: getAllPlayers(state)
 });
 
 class TeamList extends React.Component {
@@ -18,46 +18,41 @@ class TeamList extends React.Component {
         this.props.updatePlayer(player)
     };
 
+    buildTeamTemplateByType(players, teamType, totalTeams) {
+        let teamPlayers = getPlayersByTeamType(this.props.players, teamType);
+        let teamTemplate = [];
+
+        for (let i = 0; i < totalTeams; i++) {
+            teamTemplate.push({
+                players: getPlayersByTeamIndex(teamPlayers, i),
+                teamType: teamType,
+                teamIndex: i
+            });
+        }
+
+        return teamTemplate;
+    }
+
+    renderTeam(teams) {
+        return (
+            teams.map((item, index) => (
+                <TeamCard key={index} team={item}
+                          updatePlayerToTeam={this.updatePlayerToTeam}/>
+            ))
+        )
+    }
+
     render() {
 
         let defenseTeamTemplates = [];
-        let defenseTeamPlayers = [];
-
         let attackTeamTemplates = [];
-        let attackTeamPlayers = [];
-
-        let eliteTeamPlayers = [];
+        let eliteTeamTemplates = [];
 
         if (this.props.players != null) {
-            let i;
             // defense teams
-            defenseTeamPlayers = getDefensePlayers(this.props.players);
-
-            for (i = 0; i < 8; i++) {
-                defenseTeamTemplates.push({
-                    players: getPlayersByTeamIndex(defenseTeamPlayers, i),
-                    teamType: TEAM_TYPE_DEFENSE,
-                    teamIndex: i
-                });
-            }
-
-            // elite team
-            eliteTeamPlayers = {
-                players: getElitePlayers(this.props.players),
-                teamType: TEAM_TYPE_ELITE,
-                teamIndex: 0
-            };
-
-            // attack teams
-            attackTeamPlayers = getAttackPlayers(this.props.players);
-
-            for (i = 0; i < 8; ++i) {
-                attackTeamTemplates.push({
-                    players: getPlayersByTeamIndex(attackTeamPlayers, i),
-                    teamType: TEAM_TYPE_ATTACK,
-                    teamIndex: i
-                });
-            }
+            defenseTeamTemplates = this.buildTeamTemplateByType(this.props.players, TeamType.DEFENSE, 8);
+            attackTeamTemplates = this.buildTeamTemplateByType(this.props.players, TeamType.ATTACK, 8);
+            eliteTeamTemplates = this.buildTeamTemplateByType(this.props.players, TeamType.ELITE, 1);
         }
 
         return (
@@ -67,33 +62,22 @@ class TeamList extends React.Component {
                  align="top">
                 <Col span={8}>
                     <h3>Defense</h3>
-                    {
-                        defenseTeamTemplates.map((item, index) => (
-                            <TeamCard key={index} team={item}
-                                      updatePlayerToTeam={this.updatePlayerToTeam}/>
-                        ))
-                    }
+                    {this.renderTeam(defenseTeamTemplates)}
                 </Col>
                 <Col span={8}>
                     <h3>Elite</h3>
-                    {
-                        <TeamCard key={0} team={eliteTeamPlayers}
-                              updatePlayerToTeam={this.updatePlayerToTeam}/>
-                    }
+                    {this.renderTeam(eliteTeamTemplates)}
                 </Col>
                 <Col span={8}>
                     <h3>Attack</h3>
-                    {
-                        attackTeamTemplates.map((item, index) => (
-                            <TeamCard key={index} team={item}
-                                      updatePlayerToTeam={this.updatePlayerToTeam}/>
-                        ))
-                    }
+                    {this.renderTeam(attackTeamTemplates)}
                 </Col>
             </Row>
 
         )
     }
+
+
 }
 
 export default connect(mapStateToProps, {updatePlayer})(TeamList);
