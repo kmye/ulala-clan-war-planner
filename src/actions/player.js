@@ -7,6 +7,11 @@ import {
     PLAYER_UPDATE
 } from "../constants/actionTypes";
 
+import {LAST_PLAYER_INDEX} from "../constants/localStorage";
+
+let lastPlayerIndex = localStorage.getItem(LAST_PLAYER_INDEX);
+lastPlayerIndex = lastPlayerIndex == null ? 0 : lastPlayerIndex;
+
 export const initPlayers = () => ({
     type: PLAYER_INIT
 });
@@ -14,6 +19,7 @@ export const initPlayers = () => ({
 export const addPlayer = player => ({
     type: PLAYER_ADD,
     payload: {
+        playerIndex: lastPlayerIndex++,
         player: player
     }
 });
@@ -35,7 +41,7 @@ export const deletePlayer = playerIndex => ({
 export const openForm = (player) => ({
     type: PLAYER_FORM_OPEN,
     payload: {
-        player
+        playerInput: player
     }
 });
 

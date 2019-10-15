@@ -1,5 +1,5 @@
 import React from "react";
-import {Form, Input, Select} from 'antd';
+import {Form, Input, InputNumber, Select} from 'antd';
 import Modal from "antd/lib/modal";
 import {connect} from "react-redux";
 
@@ -11,18 +11,18 @@ const mapStateToProps = state => ({
 
 export const PlayerInputForm = Form.create({
     mapPropsToFields: (props) => {
-        const {player} = props;
+        const {playerInput} = props;
 
-        if (player != null) {
+        if (playerInput != null) {
             return {
                 name: Form.createFormField({
-                    value: player.name,
+                    value: playerInput.name,
                 }),
                 power: Form.createFormField({
-                    value: player.power,
+                    value: playerInput.power,
                 }),
                 class: Form.createFormField({
-                    value: player.class,
+                    value: playerInput.class,
                 })
             };
         }
@@ -37,19 +37,19 @@ export const PlayerInputForm = Form.create({
         };
 
         onSave = () => {
-            const {form, onSave, player} = this.props;
+            const {form, onSave, playerInput} = this.props;
 
             form.validateFields((err, formValues) => {
                 if (err) {
                     return;
                 }
 
-                const isUpdateMode = player != null;
+                const isUpdateMode = playerInput != null;
 
                 if(isUpdateMode) {
-                    formValues.playerIndex = player.playerIndex;
-                    formValues.teamType = player.teamType;
-                    formValues.teamIndex = player.teamIndex;
+                    formValues.playerIndex = playerInput.playerIndex;
+                    formValues.teamType = playerInput.teamType;
+                    formValues.teamIndex = playerInput.teamIndex;
                 }
 
                 onSave(formValues, isUpdateMode);
@@ -81,7 +81,7 @@ export const PlayerInputForm = Form.create({
                         <Form.Item label="Power">
                             {getFieldDecorator('power', {
                                 rules: [{required: true, message: 'Power is required.'}],
-                            })(<Input/>)}
+                            })(<InputNumber min={1}  />)}
                         </Form.Item>
 
                         <Form.Item label="Class">

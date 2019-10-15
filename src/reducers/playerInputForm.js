@@ -5,7 +5,7 @@ export default (state = {}, action) => {
         case PLAYER_FORM_OPEN:
             return {
                 ...state,
-                ...action.payload,
+                playerInput: action.payload.playerInput,
                 visible: true
             };
 

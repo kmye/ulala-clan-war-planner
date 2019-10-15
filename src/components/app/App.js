@@ -14,7 +14,7 @@ function App() {
     return (
         <DndProvider backend={HTML5Backend}>
         <Layout>
-            <Sider width={300}
+            <Sider width={320}
                    style={{
                        background: '#fff',
                        overflow: 'auto',
@@ -27,7 +27,7 @@ function App() {
             </Sider>
 
             <Layout style={{
-                marginLeft: 300,
+                marginLeft: 320,
                 height: '100vh'
             }}>
 

@@ -1,7 +1,6 @@
 import {PLAYER_ADD, PLAYER_DELETE, PLAYER_INIT, PLAYER_UPDATE} from "../constants/actionTypes";
 import {PLAYER_MASTER} from "../constants/localStorage";
 
-
 function storePlayersInLocalStorage(players) {
     localStorage.setItem(PLAYER_MASTER, JSON.stringify(players));
 }
@@ -31,7 +30,7 @@ export default (state = {}, action) => {
     switch (action.type) {
 
         case PLAYER_INIT: {
-            const localStoragePlayers = localStorage.getItem(PLAYER_MASTER);
+            let localStoragePlayers = localStorage.getItem(PLAYER_MASTER);
             return {
                 ...state,
                 players: localStoragePlayers == null ? [] : JSON.parse(localStoragePlayers)
@@ -39,8 +38,10 @@ export default (state = {}, action) => {
         }
 
         case PLAYER_ADD: {
+            let {player, playerIndex} = action.payload;
             let newPlayers = state.players.slice();
-            newPlayers.push(action.payload.player);
+            player.playerIndex = playerIndex;
+            newPlayers.push(player);
             storePlayersInLocalStorage(newPlayers);
             return {
                 ...state,

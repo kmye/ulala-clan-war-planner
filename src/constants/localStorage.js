@@ -1,1 +1,2 @@
 export const PLAYER_MASTER = "PLAYER_MASTER";
+export const LAST_PLAYER_INDEX = "LAST_PLAYER_INDEX";

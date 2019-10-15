@@ -8,13 +8,11 @@ const {Meta} = Card;
 export function PlayerCard(props) {
 
     const onUpdatePlayerClick = () => {
-        let player = props.value;
-        player.playerIndex = props.playerIndex;
-        props.onUpdatePlayerClick(player);
+        props.onUpdatePlayerClick(props.value);
     };
 
     const onDeletePlayerClick = () => {
-        props.onDeletePlayerClick(props.playerIndex);
+        props.onDeletePlayerClick(props.value.playerIndex);
     };
 
     const [{isDragging}, drag] = useDrag({
@@ -27,7 +25,7 @@ export function PlayerCard(props) {
         }),
     })
 
-    const actions = <span>
+    const actions = props.shouldRenderActions && <span>
             <Button type="dashed" icon="edit" onClick={onUpdatePlayerClick}/>
             <Button type="dashed" icon="delete" onClick={onDeletePlayerClick}/>
         </span>
@@ -39,8 +37,8 @@ export function PlayerCard(props) {
                  cursor: 'move'
              }}>
             <Card
-                style={{width: "auto", marginTop: 5}}
-                title={"(" + (props.playerIndex + 1) + ") " + props.value.name}
+                style={{width: "auto", marginTop: 5, minWidth: 270}}
+                title={"(" + (props.value.playerIndex + 1) + ") " + props.value.name}
                 extra={actions}
             >
                 <Meta title={props.value.class.label}

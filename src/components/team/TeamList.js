@@ -36,8 +36,10 @@ class TeamList extends React.Component {
     renderTeam(teams) {
         return (
             teams.map((item, index) => (
-                <TeamCard key={index} team={item}
-                          updatePlayerToTeam={this.updatePlayerToTeam}/>
+                <Col span={12} key={index}>
+                    <TeamCard team={item}
+                              updatePlayerToTeam={this.updatePlayerToTeam}/>
+                </Col>
             ))
         )
     }
@@ -62,15 +64,21 @@ class TeamList extends React.Component {
                  align="top">
                 <Col span={8}>
                     <h3>Defense</h3>
+                    <Row gutter={16}>
                     {this.renderTeam(defenseTeamTemplates)}
+                    </Row>
                 </Col>
                 <Col span={8}>
                     <h3>Elite</h3>
+                    <Row gutter={16}>
                     {this.renderTeam(eliteTeamTemplates)}
+                    </Row>
                 </Col>
                 <Col span={8}>
                     <h3>Attack</h3>
+                    <Row gutter={16}>
                     {this.renderTeam(attackTeamTemplates)}
+                    </Row>
                 </Col>
             </Row>
 

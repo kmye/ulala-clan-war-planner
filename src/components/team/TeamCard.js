@@ -2,6 +2,7 @@ import React from 'react';
 import {Card, Col, Icon, Row} from 'antd';
 import {useDrop} from "react-dnd";
 import {ItemTypes} from "../../constants/dragItemTypes";
+import {TeamPlayerIcon} from "./TeamPlayerIcon";
 
 export function TeamCard(props) {
 
@@ -42,9 +43,11 @@ export function TeamCard(props) {
                 }}
                 title={"Team " + (props.team.teamIndex + 1 + " / Power: " + teamPower)}>
                 <Row>
-                    {playersInterface.map((element) => {
-                        return element
-                    })}
+                    {
+                        props.team.players.map((element, index) => {
+                            return <TeamPlayerIcon key={index} player={element}/>
+                        })
+                    }
                 </Row>
             </Card>
         </div>

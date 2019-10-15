@@ -50,7 +50,7 @@ class PlayerList extends React.Component {
             players = this.props.players.map((item, index) => (
                 <PlayerCard key={index}
                             value={item}
-                            playerIndex={index}
+                            shouldRenderActions={true}
                             onUpdatePlayerClick={this.updatePlayerClick}
                             onDeletePlayerClick={this.deletePlayerClick}/>
             ))
@@ -65,7 +65,7 @@ class PlayerList extends React.Component {
                 <br/>
                 {players}
                 <PlayerInputForm wrappedComponentRef={this.formRef}
-                                 player={this.props.player}
+                                 playerInput={this.props.playerInput}
                                  onSave={this.savePlayerInfo}
                                  onCancel={this.closePlayerInputForm}
                                  visible={this.props.visible}/>
