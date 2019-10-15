@@ -2,7 +2,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 This is a simple app used to manage and organize players into clan war teams.
 
-This project is still work in progress.
+This project is built using React, Redux and Antd, this is still work in progress.
 
 ## Available Scripts
 
