@@ -6,9 +6,15 @@ function storePlayersInLocalStorage(players) {
 }
 
 function removePlayerFromArray(playerIndex, arrayList) {
-    return arrayList.filter(function (value, index) {
+    let filtered = arrayList.filter(function (value, index) {
         return index !== playerIndex;
     });
+
+    // update all index
+    return filtered.map((item, index) => {
+        item.playerIndex = index;
+        return item;
+    })
 }
 
 function updatePlayerInArray(player, arrayList) {
@@ -38,9 +44,9 @@ export default (state = {}, action) => {
         }
 
         case PLAYER_ADD: {
-            let {player, playerIndex} = action.payload;
+            let {player} = action.payload;
             let newPlayers = state.players.slice();
-            player.playerIndex = playerIndex;
+            player.playerIndex = newPlayers.length;
             newPlayers.push(player);
             storePlayersInLocalStorage(newPlayers);
             return {
