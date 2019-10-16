@@ -6,7 +6,9 @@ This project is built using React, Redux and Antd, this is still work in progres
 
 Features:
 - Import & Export Player data from CSV.
+- Input of player data using form.
 - Organize players to team by drag and drop.
+- Usage of local storage to store player data so the data will not disappear after page refresh.
 
 
 ## Available Scripts
