@@ -12,7 +12,7 @@ const {Header, Footer, Sider, Content} = Layout;
 
 function App() {
 
-    const siderWidth = 320
+    const siderWidth = 300
 
     return (
         <DndProvider backend={HTML5Backend}>

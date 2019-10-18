@@ -32,7 +32,7 @@ export function TeamPlayerIcon(props) {
                  }}>
                 <Popover
                     content={popoverContent}
-                    trigger="hover"><Icon style={{color: playerColor}} type="smile"/> {player.playerIndex + 1}
+                    trigger="hover"><Icon style={{color: playerColor}} type="smile"/> {player.playerIndex + 1} <p>{player.name}</p>
                 </Popover>
             </div>
     } else {

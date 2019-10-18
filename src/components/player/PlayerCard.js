@@ -10,6 +10,10 @@ export function PlayerCard(props) {
         props.onUpdatePlayerClick(props.value);
     };
 
+    const onUnassignedPlayerClick = () => {
+        props.onUnassignPlayerClick(props.value);
+    }
+
     const onDeletePlayerClick = () => {
         props.onDeletePlayerClick(props.value.playerIndex);
     };
@@ -24,8 +28,12 @@ export function PlayerCard(props) {
         }),
     })
 
+    const assignedIcon = props.value.teamIndex != null ?
+        <Button type="dashed" icon="check" onClick={onUnassignedPlayerClick}/> : "";
+
     const actions = props.shouldRenderActions &&
         <span>
+            {assignedIcon}
             <Button type="dashed" icon="edit" onClick={onUpdatePlayerClick}/>
              <Popconfirm
                  title="Are you sure delete this record?"

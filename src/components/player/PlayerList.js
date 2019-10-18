@@ -4,6 +4,8 @@ import {PlayerInputForm} from "./PlayerInputForm";
 import {connect} from "react-redux";
 import {
     addPlayer,
+    autoAssignPlayers,
+    unassignPlayer,
     clearPlayers,
     closeForm,
     deletePlayer,
@@ -48,6 +50,10 @@ class PlayerList extends React.Component {
         this.props.openForm(player);
     };
 
+    unassignPlayerClick = (player) => {
+        this.props.unassignPlayer(player);
+    }
+
     deletePlayerClick = (playerIndex) => {
         this.props.deletePlayer(playerIndex)
     };
@@ -63,15 +69,27 @@ class PlayerList extends React.Component {
     autoAssign = () => {
         // TODO
         message.loading("Work in progress...");
+        this.props.autoAssignPlayers()
     };
 
     exportData = () => {
         // export all player data to csv
         const formattedData = this.props.players.map((item) => {
-            return {
-                name: item.name,
-                power: item.power,
-                class: item.class.label
+            console.log(item);
+            if(item.teamIndex === undefined) {
+                return {
+                    name: item.name,
+                    power: item.power,
+                    class: item.class.label,
+                    team: ""
+                }
+            } else {
+                return {
+                    name: item.name,
+                    power: item.power,
+                    class: item.class.label,
+                    team: item.teamType + " - Team " +  (item.teamIndex+1),
+                }
             }
         });
 
@@ -104,7 +122,7 @@ class PlayerList extends React.Component {
                     isFirstRow = false;
                 } else {
                     let playerData = element.split(",");
-                    if (playerData.length === 3) {
+                    if (playerData.length >= 3) {
                         // insert as player data
                         const playerName = playerData[0].replace(/"/g, "");
                         const playerPower = playerData[1].replace(/"/g, "");
@@ -176,6 +194,7 @@ class PlayerList extends React.Component {
                 <PlayerCard key={index}
                             value={item}
                             shouldRenderActions={true}
+                            onUnassignPlayerClick={this.unassignPlayerClick}
                             onUpdatePlayerClick={this.updatePlayerClick}
                             onDeletePlayerClick={this.deletePlayerClick}/>
             ));
@@ -224,5 +243,7 @@ export default connect(mapStateToProps, {
     updatePlayer,
     deletePlayer,
     clearPlayers,
-    sortPlayersByPower
+    unassignPlayer,
+    sortPlayersByPower,
+    autoAssignPlayers
 })(PlayerList)

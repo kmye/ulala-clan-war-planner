@@ -5,9 +5,11 @@ import {connect} from "react-redux";
 import {TeamCard} from "./TeamCard";
 import {updatePlayer} from "../../actions/player";
 import {TeamType} from "../../constants/teamTypes";
+import {TEAM_LIST_DISPLAY_IN_COL} from "../../constants/actionTypes";
 
 const mapStateToProps = state => ({
-    players: getAllPlayers(state)
+    ...state.teamList,
+    players: getAllPlayers(state),
 });
 
 class TeamList extends React.Component {
@@ -46,19 +48,7 @@ class TeamList extends React.Component {
         )
     }
 
-    render() {
-
-        let defenseTeamTemplates = [];
-        let attackTeamTemplates = [];
-        let eliteTeamTemplates = [];
-
-        if (this.props.players != null) {
-            // defense teams
-            defenseTeamTemplates = this.buildTeamTemplateByType(this.props.players, TeamType.DEFENSE, 8);
-            attackTeamTemplates = this.buildTeamTemplateByType(this.props.players, TeamType.ATTACK, 8);
-            eliteTeamTemplates = this.buildTeamTemplateByType(this.props.players, TeamType.ELITE, 1);
-        }
-
+    renderInColumns(defenseTeamTemplates, eliteTeamTemplates, attackTeamTemplates) {
         return (
             <Row gutter={16}
                  type="flex"
@@ -83,11 +73,52 @@ class TeamList extends React.Component {
                     </Row>
                 </Col>
             </Row>
-
         )
     }
 
+    renderInRows(defenseTeamTemplates, eliteTeamTemplates, attackTeamTemplates) {
+        return (
+            <Row gutter={16}
+                 type="flex"
+                 justify="space-around"
+                 align="top">
+                <Col>
+                    <h3>Defense</h3>
+                    {this.renderTeam(defenseTeamTemplates)}
 
+                    <h3>Elite</h3>
+                    {this.renderTeam(eliteTeamTemplates)}
+
+                    <h3>Attack</h3>
+                    {this.renderTeam(attackTeamTemplates)}
+                </Col>
+            </Row>
+        )
+    }
+
+    render() {
+
+        let defenseTeamTemplates = [];
+        let attackTeamTemplates = [];
+        let eliteTeamTemplates = [];
+
+        if (this.props.players != null) {
+            // defense teams
+            defenseTeamTemplates = this.buildTeamTemplateByType(this.props.players, TeamType.DEFENSE, 8);
+            attackTeamTemplates = this.buildTeamTemplateByType(this.props.players, TeamType.ATTACK, 8);
+            eliteTeamTemplates = this.buildTeamTemplateByType(this.props.players, TeamType.ELITE, 1);
+        }
+
+        console.log(this.props.displayInRow);
+        let displayType = (this.props.display && this.props.display === TEAM_LIST_DISPLAY_IN_COL)
+            ? this.renderInColumns(defenseTeamTemplates, eliteTeamTemplates, attackTeamTemplates)
+            : this.renderInRows(defenseTeamTemplates, eliteTeamTemplates, attackTeamTemplates);
+
+        // let displayType = this.renderInRows(defenseTeamTemplates, eliteTeamTemplates, attackTeamTemplates);
+        return (
+            displayType
+        )
+    }
 }
 
 export default connect(mapStateToProps, {updatePlayer})(TeamList);

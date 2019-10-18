@@ -1,12 +1,15 @@
 import {
     PLAYER_ADD,
+    PLAYER_AUTO_ASSIGN,
     PLAYER_CLEAR,
     PLAYER_DELETE,
     PLAYER_INIT,
-    PLAYER_SORT_BY_POWER,
+    PLAYER_SORT_BY_POWER, PLAYER_UNASSIGN,
     PLAYER_UPDATE
 } from "../constants/actionTypes";
 import {PLAYER_MASTER} from "../constants/localStorage";
+import {ClassType, getAllClassIdsByType} from "../constants/ulalaClasses";
+import {TeamType} from "../constants/teamTypes";
 
 function storePlayersInLocalStorage(players) {
     localStorage.setItem(PLAYER_MASTER, JSON.stringify(players));
@@ -48,6 +51,81 @@ function sortPlayers(players, sortAscending) {
         return item;
     });
 }
+
+function autoAssignPlayers(players) {
+    let sortedPlayersByLargestPower = sortPlayers(players, false);
+
+    // separate into tank, dps and healers
+    let tankPlayers = sortedPlayersByLargestPower.filter((item) => {
+        return getAllClassIdsByType(ClassType.TANK).includes(item.class.key)
+    });
+
+    let dpsPlayers = sortedPlayersByLargestPower.filter((item) => {
+        return getAllClassIdsByType(ClassType.DPS).includes(item.class.key)
+    });
+
+    let magicDpsPlayers = sortedPlayersByLargestPower.filter((item) => {
+        return getAllClassIdsByType(ClassType.MAGIC_DPS).includes(item.class.key)
+    });
+
+    let supportPlayers = sortedPlayersByLargestPower.filter((item) => {
+        return getAllClassIdsByType(ClassType.SUPPORT).includes(item.class.key)
+    });
+
+    let assignedPlayers = [];
+
+    let shiftPlayer = (players, teamIndex, teamType) => {
+        let player = players.shift();
+        player.teamIndex = teamIndex;
+        player.teamType = teamType;
+
+        return player;
+    };
+
+    const assignToTeams = (teamIndex, teamType) => {
+        let assignedCount = 0;
+
+        do {
+            if (tankPlayers.length > 0) {
+                assignedPlayers.push(shiftPlayer(tankPlayers, teamIndex, teamType));
+                ++assignedCount;
+            }
+
+            if (supportPlayers.length > 0) {
+                assignedPlayers.push(shiftPlayer(supportPlayers, teamIndex, teamType));
+                ++assignedCount;
+            }
+
+            if (magicDpsPlayers.length > 0) {
+                assignedPlayers.push(shiftPlayer(magicDpsPlayers, teamIndex, teamType));
+                ++assignedCount;
+            }
+
+            if (dpsPlayers.length > 0) {
+                assignedPlayers.push(shiftPlayer(dpsPlayers, teamIndex, teamType));
+                ++assignedCount;
+            }
+
+        } while (assignedCount < 4)
+    };
+
+    assignToTeams(0, TeamType.ELITE);
+    for (let i = 0; i < 8; ++i) {
+        assignToTeams(i, TeamType.ATTACK);
+        assignToTeams(i, TeamType.DEFENSE);
+    }
+
+    let unassignedPlayers = [];
+
+    if (assignedPlayers < sortedPlayersByLargestPower) {
+        unassignedPlayers = players.filter((item) => {
+            return item.teamIndex === undefined;
+        })
+    }
+
+    return assignedPlayers.concat(unassignedPlayers);
+}
+
 
 export default (state = {}, action) => {
 
@@ -107,6 +185,26 @@ export default (state = {}, action) => {
                 ...state,
                 players: sorted
             };
+
+        case PLAYER_AUTO_ASSIGN: {
+            let assignedPlayers = autoAssignPlayers(state.players);
+            storePlayersInLocalStorage(assignedPlayers);
+            return {
+                ...state,
+                players: assignedPlayers
+            }
+        }
+        case PLAYER_UNASSIGN: {
+            let player = action.payload.player;
+            player.teamIndex = null;
+            player.teamType = null;
+            let updatedArray = updatePlayerInArray(player, state.players);
+            storePlayersInLocalStorage(updatedArray);
+            return {
+                ...state,
+                players: updatedArray
+            }
+        }
 
         default:
             return state;
