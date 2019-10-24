@@ -4,7 +4,8 @@ import {
     PLAYER_FORM_CLOSE,
     PLAYER_FORM_OPEN,
     PLAYER_INIT,
-    PLAYER_SORT_BY_POWER, PLAYER_UNASSIGN,
+    PLAYER_SORT_BY_POWER,
+    PLAYER_UNASSIGN,
     PLAYER_UPDATE
 } from "../constants/actionTypes";
 

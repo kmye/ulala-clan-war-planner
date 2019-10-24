@@ -4,7 +4,8 @@ import {
     PLAYER_CLEAR,
     PLAYER_DELETE,
     PLAYER_INIT,
-    PLAYER_SORT_BY_POWER, PLAYER_UNASSIGN,
+    PLAYER_SORT_BY_POWER,
+    PLAYER_UNASSIGN,
     PLAYER_UPDATE
 } from "../constants/actionTypes";
 import {PLAYER_MASTER} from "../constants/localStorage";
@@ -53,28 +54,29 @@ function sortPlayers(players, sortAscending) {
 }
 
 function autoAssignPlayers(players) {
-    let sortedPlayersByLargestPower = sortPlayers(players, false);
+
+    let sortedPlayers = sortPlayers(players, false);
 
     // separate into tank, dps and healers
-    let tankPlayers = sortedPlayersByLargestPower.filter((item) => {
+    let tankPlayers = sortedPlayers.filter((item) => {
         return getAllClassIdsByType(ClassType.TANK).includes(item.class.key)
     });
 
-    let dpsPlayers = sortedPlayersByLargestPower.filter((item) => {
+    let dpsPlayers = sortedPlayers.filter((item) => {
         return getAllClassIdsByType(ClassType.DPS).includes(item.class.key)
     });
 
-    let magicDpsPlayers = sortedPlayersByLargestPower.filter((item) => {
+    let magicDpsPlayers = sortedPlayers.filter((item) => {
         return getAllClassIdsByType(ClassType.MAGIC_DPS).includes(item.class.key)
     });
 
-    let supportPlayers = sortedPlayersByLargestPower.filter((item) => {
+    let supportPlayers = sortedPlayers.filter((item) => {
         return getAllClassIdsByType(ClassType.SUPPORT).includes(item.class.key)
     });
 
     let assignedPlayers = [];
 
-    let shiftPlayer = (players, teamIndex, teamType) => {
+    const shiftPlayer = (players, teamIndex, teamType) => {
         let player = players.shift();
         player.teamIndex = teamIndex;
         player.teamType = teamType;
@@ -110,18 +112,15 @@ function autoAssignPlayers(players) {
     };
 
     assignToTeams(0, TeamType.ELITE);
+
     for (let i = 0; i < 8; ++i) {
         assignToTeams(i, TeamType.ATTACK);
         assignToTeams(i, TeamType.DEFENSE);
     }
 
-    let unassignedPlayers = [];
-
-    if (assignedPlayers < sortedPlayersByLargestPower) {
-        unassignedPlayers = players.filter((item) => {
-            return item.teamIndex === undefined;
-        })
-    }
+    let unassignedPlayers = sortedPlayers.filter((item) => {
+        return item.teamIndex === undefined || item.teamIndex === null;
+    });
 
     return assignedPlayers.concat(unassignedPlayers);
 }

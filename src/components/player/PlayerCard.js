@@ -31,8 +31,10 @@ export function PlayerCard(props) {
     const assignedIcon = props.value.teamIndex != null ?
         <Button type="dashed" icon="check" onClick={onUnassignedPlayerClick}/> : "";
 
-    const actions = props.shouldRenderActions &&
-        <span>
+    let actions = "";
+
+    if (props.shouldRenderActions) {
+        actions = <span>
             {assignedIcon}
             <Button type="dashed" icon="edit" onClick={onUpdatePlayerClick}/>
              <Popconfirm
@@ -45,6 +47,9 @@ export function PlayerCard(props) {
                  <Button type="dashed" icon="delete"/>
              </Popconfirm>
         </span>
+    } else {
+        actions = <span>{assignedIcon}</span>
+    }
 
     let playerColor = ULALA_CLASS_TAG_COLORS[props.value.class.key - 1];
 

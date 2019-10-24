@@ -31,6 +31,9 @@ export function TeamCard(props) {
         }),
     });
 
+    const onUnassignPlayerClick = (player) => {
+        props.onUnassignPlayerClick(player);
+    };
 
     return (
         <div ref={drop}>
@@ -47,7 +50,7 @@ export function TeamCard(props) {
                 <Row>
                     {
                         team.players.map((element, index) => {
-                            return <TeamPlayerIcon key={index} player={element}/>
+                            return <TeamPlayerIcon key={index} player={element} onUnassignPlayerClick={onUnassignPlayerClick}/>
                         })
                     }
                 </Row>

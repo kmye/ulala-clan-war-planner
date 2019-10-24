@@ -78,9 +78,11 @@ export const PlayerInputForm = Form.create({
                                 rules: [
                                     {required: true, message: 'Player name is required.'},
                                     {pattern: new RegExp('^\\w*$'), message: 'Player name must be alphanumeric input only.'},
+                                    {max: 15, message: 'Player name cannot exceed 15 characters'}
                                 ],
                             })(<Input allowClear/>)}
                         </Form.Item>
+
                         <Form.Item label="Power">
                             {getFieldDecorator('power', {
                                 rules: [{required: true, message: 'Power is required.'}],
@@ -109,9 +111,8 @@ export const PlayerInputForm = Form.create({
                 </Modal>
             );
         }
-
     }
-)
+);
 
 
 connect(mapStateToProps)(PlayerInputForm)

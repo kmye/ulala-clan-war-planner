@@ -5,6 +5,7 @@ import {useDrag} from "react-dnd";
 import {ItemTypes} from "../../constants/dragItemTypes";
 import {ULALA_CLASS_TAG_COLORS} from "../../constants/ulalaClasses";
 
+
 export function TeamPlayerIcon(props) {
 
     let playerRepresentation;
@@ -20,8 +21,12 @@ export function TeamPlayerIcon(props) {
         }),
     });
 
+    const onUnassignPlayerClick = () => {
+        props.onUnassignPlayerClick(player)
+    };
+
     if (player != null) {
-        let popoverContent = <PlayerCard value={player}/>
+        let popoverContent = <PlayerCard value={player} onUnassignPlayerClick={onUnassignPlayerClick}/>
         let playerColor = ULALA_CLASS_TAG_COLORS[player.class.key - 1];
 
         playerRepresentation =
@@ -32,7 +37,8 @@ export function TeamPlayerIcon(props) {
                  }}>
                 <Popover
                     content={popoverContent}
-                    trigger="hover"><Icon style={{color: playerColor}} type="smile"/> {player.playerIndex + 1} <p>{player.name}</p>
+                    trigger="hover"><Icon style={{color: playerColor}} type="smile"/> {player.playerIndex + 1}
+                    <p>{player.name}</p>
                 </Popover>
             </div>
     } else {
@@ -43,3 +49,4 @@ export function TeamPlayerIcon(props) {
         <Col span={6}>{playerRepresentation}</Col>
     )
 }
+

@@ -3,7 +3,7 @@ import {Col, Row} from "antd";
 import {getAllPlayers, getPlayersByTeamIndex, getPlayersByTeamType} from "../../selector";
 import {connect} from "react-redux";
 import {TeamCard} from "./TeamCard";
-import {updatePlayer} from "../../actions/player";
+import {unassignPlayer, updatePlayer} from "../../actions/player";
 import {TeamType} from "../../constants/teamTypes";
 import {TEAM_LIST_DISPLAY_IN_COL} from "../../constants/actionTypes";
 
@@ -18,6 +18,10 @@ class TeamList extends React.Component {
         player.teamIndex = team.teamIndex;
         player.teamType = team.teamType;
         this.props.updatePlayer(player)
+    };
+
+    onUnassignPlayerClick = (player) => {
+        this.props.unassignPlayer(player);
     };
 
     buildTeamTemplateByType(players, teamType, totalTeams) {
@@ -42,7 +46,7 @@ class TeamList extends React.Component {
             teams.map((item, index) => (
                 <Col span={!isEliteTeam ? 12 : 24} key={index}>
                     <TeamCard team={item}
-                              updatePlayerToTeam={this.updatePlayerToTeam}/>
+                              updatePlayerToTeam={this.updatePlayerToTeam} onUnassignPlayerClick={this.onUnassignPlayerClick}/>
                 </Col>
             ))
         )
@@ -109,7 +113,6 @@ class TeamList extends React.Component {
             eliteTeamTemplates = this.buildTeamTemplateByType(this.props.players, TeamType.ELITE, 1);
         }
 
-        console.log(this.props.displayInRow);
         let displayType = (this.props.display && this.props.display === TEAM_LIST_DISPLAY_IN_COL)
             ? this.renderInColumns(defenseTeamTemplates, eliteTeamTemplates, attackTeamTemplates)
             : this.renderInRows(defenseTeamTemplates, eliteTeamTemplates, attackTeamTemplates);
@@ -121,4 +124,4 @@ class TeamList extends React.Component {
     }
 }
 
-export default connect(mapStateToProps, {updatePlayer})(TeamList);
+export default connect(mapStateToProps, {updatePlayer, unassignPlayer})(TeamList);
