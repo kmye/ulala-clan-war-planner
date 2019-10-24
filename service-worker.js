@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/ulala-clan-war-planner/precache-manifest.939ec8a8118d5e1646573bb54a43cefe.js"
+  "/ulala-clan-war-planner/precache-manifest.21c6f482dd87a755b244a0ea189edcfe.js"
 );
 
 self.addEventListener('message', (event) => {
