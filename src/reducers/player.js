@@ -9,7 +9,7 @@ import {
     PLAYER_UPDATE
 } from "../constants/actionTypes";
 import {PLAYER_MASTER} from "../constants/localStorage";
-import {playerService} from "../services/playerService";
+import {playerService} from "../services/PlayerService";
 
 
 export default (state = {}, action) => {

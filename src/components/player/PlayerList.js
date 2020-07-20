@@ -16,7 +16,7 @@ import {
 } from "../../actions/player";
 import {PlayerCard} from "./PlayerCard";
 import {ExportToCsv} from "export-to-csv";
-import {getClassByName} from "../../constants/ulalaClasses";
+import { importCSVService } from "../../services/ImportCSVService";
 
 const mapStateToProps = state => ({
     ...state.playerInputForm,
@@ -112,34 +112,6 @@ class PlayerList extends React.Component {
 
         let props = this.props;
 
-        const processCsvFile = (rawData) => {
-            let dataRows = rawData.split(/\n/g,);
-            let isFirstRow = true;
-
-            props.clearPlayers();
-            dataRows.forEach(function (element) {
-                if (isFirstRow) {
-                    isFirstRow = false;
-                } else {
-                    let playerData = element.split(",");
-                    if (playerData.length >= 3) {
-                        // insert as player data
-                        const playerName = playerData[0].replace(/"/g, "");
-                        const playerPower = playerData[1].replace(/"/g, "");
-                        const playerClass = playerData[2].replace(/"/g, "");
-
-                        let player = {
-                            name: playerName,
-                            power: playerPower,
-                            class: getClassByName(playerClass)
-                        };
-
-                        props.addPlayer(player)
-                    }
-                }
-            })
-        };
-
         const fileUploadProps = {
             name: "file",
             accept: '.csv,application/vnd.ms-excel',
@@ -149,7 +121,11 @@ class PlayerList extends React.Component {
                 if (info.file.status !== 'uploading') {
                     let reader = new FileReader();
                     reader.addEventListener('load', function (e) {
-                        processCsvFile(e.target.result)
+                        props.clearPlayers();
+                        const importedPlayers = importCSVService.processRows(e.target.result);
+                        importedPlayers.forEach(player => {
+                            props.addPlayer(player)
+                        })
                     });
 
                     reader.readAsText(info.file);
