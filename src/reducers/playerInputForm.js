@@ -1,21 +1,21 @@
-import {PLAYER_FORM_CLOSE, PLAYER_FORM_OPEN} from "../constants/actionTypes";
+import { PLAYER_FORM_CLOSE, PLAYER_FORM_OPEN } from '../constants/actionTypes';
 
 export default (state = {}, action) => {
-    switch (action.type) {
-        case PLAYER_FORM_OPEN:
-            return {
-                ...state,
-                playerInput: action.payload.playerInput,
-                visible: true
-            };
+  switch (action.type) {
+    case PLAYER_FORM_OPEN:
+      return {
+        ...state,
+        playerInput: action.payload.playerInput,
+        visible: true,
+      };
 
-        case PLAYER_FORM_CLOSE:
-            return {
-                ...state,
-                visible: false
-            };
+    case PLAYER_FORM_CLOSE:
+      return {
+        ...state,
+        visible: false,
+      };
 
-        default:
-            return state;
-    }
-}
+    default:
+      return state;
+  }
+};

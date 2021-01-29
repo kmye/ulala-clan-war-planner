@@ -21,7 +21,9 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build"
+    "deploy": "gh-pages -d build",
+    "lint": "eslint",
+    "lint-fix": "npm run lint -- --fix"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -40,6 +42,8 @@
   },
   "homepage": "https://kmye.github.io/ulala-clan-war-planner/",
   "devDependencies": {
-    "gh-pages": "^2.1.1"
+    "eslint": "^6.1.0",
+    "gh-pages": "^2.1.1",
+    "jest": "24.9.0"
   }
 }

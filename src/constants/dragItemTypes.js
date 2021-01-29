@@ -1,3 +1,3 @@
 export const ItemTypes = {
-    PLAYER: 'PLAYER',
+  PLAYER: 'PLAYER',
 };
