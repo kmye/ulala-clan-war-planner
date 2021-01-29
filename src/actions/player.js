@@ -7,7 +7,7 @@ import {
   PLAYER_SORT_BY_POWER,
   PLAYER_UNASSIGN,
   PLAYER_UPDATE,
-} from '../constants/actionTypes';
+} from '../constants/action_types';
 
 export const initPlayers = () => ({
   type: PLAYER_INIT,

@@ -1,4 +1,4 @@
-import { getClassByName } from '../constants/ulalaClasses';
+import { getClassByName } from '../constants/classes';
 
 function cleanString(value) {
   return value.replace(/"/g, '');

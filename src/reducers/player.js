@@ -6,18 +6,135 @@ import {
   PLAYER_INIT,
   PLAYER_SORT_BY_POWER,
   PLAYER_UNASSIGN,
-  PLAYER_UPDATE,
-} from '../constants/actionTypes';
-import { PLAYER_MASTER } from '../constants/localStorage';
-import { playerService } from '../services/PlayerService';
+  PLAYER_UPDATE
+} from "../constants/action_types";
+import {PLAYER_MASTER} from "../constants/local_storage";
+import {ClassType, getAllClassIdsByType} from "../constants/classes";
+import {TeamType} from "../constants/team_types";
+
+function storePlayersInLocalStorage(players) {
+  localStorage.setItem(PLAYER_MASTER, JSON.stringify(players));
+}
+
+function removePlayerFromArray(playerIndex, arrayList) {
+  let filtered = arrayList.filter(function (value, index) {
+    return index !== playerIndex;
+  });
+
+  // update all index
+  return filtered.map((item, index) => {
+    item.playerIndex = index;
+    return item;
+  })
+}
+
+function updatePlayerInArray(player, arrayList) {
+  return arrayList.map((item, index) => {
+    if (index !== player.playerIndex) {
+      return item
+    }
+
+    // Otherwise, this is the one we want - return an updated value
+    return {
+      ...item,
+      ...player
+    }
+  })
+}
+
+function sortPlayers(players, sortAscending) {
+  let sorted = players.sort(function (a, b) {
+    return (sortAscending) ? (a.power - b.power) : (b.power) - (a.power);
+  });
+
+  return sorted.map((item, index) => {
+    item.playerIndex = index;
+    return item;
+  });
+}
+
+function autoAssignPlayers(players) {
+
+  const sortedPlayers = sortPlayers(players, false);
+
+  // separate into tank, dps and healers
+  const tankPlayers = sortedPlayers.filter((item) => {
+    return getAllClassIdsByType(ClassType.TANK).includes(item.class.key)
+  });
+
+  const dpsPlayers = sortedPlayers.filter((item) => {
+    return getAllClassIdsByType(ClassType.DPS).includes(item.class.key)
+  });
+
+  const magicDpsPlayers = sortedPlayers.filter((item) => {
+    return getAllClassIdsByType(ClassType.MAGIC_DPS).includes(item.class.key)
+  });
+
+  const supportPlayers = sortedPlayers.filter((item) => {
+    return getAllClassIdsByType(ClassType.SUPPORT).includes(item.class.key)
+  });
+
+  const assignedPlayers = [];
+
+  const shiftPlayer = (players, teamIndex, teamType) => {
+    const player = players.shift();
+    player.teamIndex = teamIndex;
+    player.teamType = teamType;
+
+    return player;
+  };
+
+  const assignToTeams = (teamIndex, teamType) => {
+    let assignedCount = 0;
+
+    do {
+      if (tankPlayers.length > 0) {
+        assignedPlayers.push(shiftPlayer(tankPlayers, teamIndex, teamType));
+        ++assignedCount;
+      }
+
+      if (supportPlayers.length > 0) {
+        assignedPlayers.push(shiftPlayer(supportPlayers, teamIndex, teamType));
+        ++assignedCount;
+      }
+
+      if (magicDpsPlayers.length > 0) {
+        assignedPlayers.push(shiftPlayer(magicDpsPlayers, teamIndex, teamType));
+        ++assignedCount;
+      }
+
+      if (dpsPlayers.length > 0) {
+        assignedPlayers.push(shiftPlayer(dpsPlayers, teamIndex, teamType));
+        ++assignedCount;
+      }
+      console.log(assignedCount)
+    } while (assignedCount < 4 && assignedCount >= players.length)
+  };
+
+  assignToTeams(0, TeamType.ELITE);
+
+  for (let i = 0; i < 8; ++i) {
+    assignToTeams(i, TeamType.ATTACK);
+    assignToTeams(i, TeamType.DEFENSE);
+  }
+
+  const unassignedPlayers = sortedPlayers.filter((item) => {
+    return item.teamIndex === undefined || item.teamIndex === null;
+  });
+
+  return [...assignedPlayers, ...unassignedPlayers];
+}
+
 
 export default (state = {}, action) => {
+
   switch (action.type) {
+
     case PLAYER_INIT: {
-      const localStoragePlayers = localStorage.getItem(PLAYER_MASTER);
+      let localStoragePlayers = localStorage.getItem(PLAYER_MASTER);
       return {
         ...state,
-        players: localStoragePlayers == null ? [] : JSON.parse(localStoragePlayers),
+        players: localStoragePlayers == null ? [] : JSON.parse(localStoragePlayers)
       };
     }
 
@@ -25,60 +142,70 @@ export default (state = {}, action) => {
       localStorage.setItem(PLAYER_MASTER, null);
       return {
         ...state,
-        players: [],
-      };
+        players: []
+      }
     }
 
     case PLAYER_ADD: {
+      let {player} = action.payload;
+      let newPlayers = state.players.slice();
+      player.playerIndex = newPlayers.length;
+      newPlayers.push(player);
+      storePlayersInLocalStorage(newPlayers);
       return {
         ...state,
-        players: playerService.addPlayer(action.payload.player, state.players),
+        players: newPlayers
       };
     }
 
     case PLAYER_UPDATE: {
-      const updatedArray = playerService.updatePlayer(action.payload.player, state.players);
+      let updatedArray = updatePlayerInArray(action.payload.player, state.players);
+      storePlayersInLocalStorage(updatedArray);
       return {
         ...state,
-        players: updatedArray,
+        players: updatedArray
       };
     }
 
     case PLAYER_DELETE: {
-      const filtered = playerService.removePlayer(action.payload.playerIndex, state.players);
+      let filtered = removePlayerFromArray(action.payload.playerIndex, state.players);
+      storePlayersInLocalStorage(filtered);
       return {
         ...state,
-        players: filtered,
+        players: filtered
       };
     }
 
     case PLAYER_SORT_BY_POWER:
-      const { sortType } = action.payload;
-      const sorted = playerService.sortPlayers(state.players, sortType);
+      const sortType = action.payload.sortType;
+      let sorted = sortPlayers(state.players, sortType);
+      storePlayersInLocalStorage(sorted);
       return {
         ...state,
-        players: sorted,
+        players: sorted
       };
 
     case PLAYER_AUTO_ASSIGN: {
-      const assignedPlayers = playerService.autoAssignPlayers(state.players);
+      let assignedPlayers = autoAssignPlayers(state.players);
+      storePlayersInLocalStorage(assignedPlayers);
       return {
         ...state,
-        players: assignedPlayers,
-      };
+        players: assignedPlayers
+      }
     }
     case PLAYER_UNASSIGN: {
-      const { player } = action.payload;
+      let player = action.payload.player;
       player.teamIndex = null;
       player.teamType = null;
-      const updatedArray = playerService.updatePlayer(player, state.players);
+      let updatedArray = updatePlayerInArray(player, state.players);
+      storePlayersInLocalStorage(updatedArray);
       return {
         ...state,
-        players: updatedArray,
-      };
+        players: updatedArray
+      }
     }
 
     default:
       return state;
   }
-};
+}

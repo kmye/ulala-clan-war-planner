@@ -16,7 +16,7 @@ import {
 } from "../../actions/player";
 import {PlayerCard} from "./PlayerCard";
 import {ExportToCsv} from "export-to-csv";
-import { importCSVService } from "../../services/ImportCSVService";
+import { importCSVService } from "../../services/import_csv_service";
 
 const mapStateToProps = state => ({
     ...state.playerInputForm,

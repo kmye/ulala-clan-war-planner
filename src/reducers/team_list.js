@@ -1,4 +1,4 @@
-import { TEAM_INIT } from '../constants/actionTypes';
+import { TEAM_INIT } from '../constants/action_types';
 
 export default (state = {}, action) => {
   switch (action.type) {

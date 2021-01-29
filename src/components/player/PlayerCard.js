@@ -3,8 +3,8 @@ import {
   Button, Card, Col, Popconfirm, Row, Tag,
 } from 'antd';
 import { useDrag } from 'react-dnd';
-import { ItemTypes } from '../../constants/dragItemTypes';
-import { ULALA_CLASS_TAG_COLORS } from '../../constants/ulalaClasses';
+import { ItemTypes } from '../../constants/drag_item_types';
+import { ULALA_CLASS_TAG_COLORS } from '../../constants/classes';
 
 export function PlayerCard(props) {
   const onUpdatePlayerClick = () => {

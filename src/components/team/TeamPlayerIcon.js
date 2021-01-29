@@ -2,8 +2,8 @@ import React from 'react';
 import { Col, Icon, Popover } from 'antd';
 import { useDrag } from 'react-dnd';
 import { PlayerCard } from '../player/PlayerCard';
-import { ItemTypes } from '../../constants/dragItemTypes';
-import { ULALA_CLASS_TAG_COLORS } from '../../constants/ulalaClasses';
+import { ItemTypes } from '../../constants/drag_item_types';
+import { ULALA_CLASS_TAG_COLORS } from '../../constants/classes';
 
 export function TeamPlayerIcon(props) {
   let playerRepresentation;

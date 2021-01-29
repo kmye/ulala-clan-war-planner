@@ -3,7 +3,7 @@ import {
   Badge, Card, Row, Tooltip,
 } from 'antd';
 import { useDrop } from 'react-dnd';
-import { ItemTypes } from '../../constants/dragItemTypes';
+import { ItemTypes } from '../../constants/drag_item_types';
 import { TeamPlayerIcon } from './TeamPlayerIcon';
 
 export function TeamCard(props) {

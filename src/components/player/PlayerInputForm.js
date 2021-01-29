@@ -3,7 +3,7 @@ import {Form, Input, InputNumber, Select} from 'antd';
 import Modal from "antd/lib/modal";
 import {connect} from "react-redux";
 
-import {ULALA_CLASSES} from "../../constants/ulalaClasses";
+import {ULALA_CLASSES} from "../../constants/classes";
 
 const mapStateToProps = state => ({
     ...state.playerInputForm

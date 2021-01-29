@@ -4,8 +4,8 @@ import {getAllPlayers, getPlayersByTeamIndex, getPlayersByTeamType} from "../../
 import {connect} from "react-redux";
 import {TeamCard} from "./TeamCard";
 import {unassignPlayer, updatePlayer} from "../../actions/player";
-import {TeamType} from "../../constants/teamTypes";
-import {TEAM_LIST_DISPLAY_IN_COL} from "../../constants/actionTypes";
+import {TeamType} from "../../constants/team_types";
+import {TEAM_LIST_DISPLAY_IN_COL} from "../../constants/action_types";
 
 const mapStateToProps = state => ({
     ...state.teamList,

@@ -1,4 +1,4 @@
-import { PLAYER_FORM_CLOSE, PLAYER_FORM_OPEN } from '../constants/actionTypes';
+import { PLAYER_FORM_CLOSE, PLAYER_FORM_OPEN } from '../constants/action_types';
 
 export default (state = {}, action) => {
   switch (action.type) {
