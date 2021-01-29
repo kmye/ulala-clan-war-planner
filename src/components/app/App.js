@@ -52,7 +52,7 @@ function App() {
 
           </Content>
 
-          <Footer className="custom-footer">Developed by kmye ©2019</Footer>
+          <Footer className="custom-footer">Developed by kmye ©2021</Footer>
         </Layout>
 
       </Layout>
