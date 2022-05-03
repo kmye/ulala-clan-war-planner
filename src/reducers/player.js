@@ -41,8 +41,7 @@ function sortPlayers(players, sortAscending) {
     return (sortAscending) ? (a.power - b.power) : (b.power) - (a.power);
   });
 
-  return sorted.map((item, index) => {
-    item.playerIndex = index;
+  return sorted.map((item) => {
     return item;
   });
 }
@@ -53,19 +52,19 @@ function autoAssignPlayers(players) {
 
   // separate into tank, dps and healers
   const tankPlayers = sortedPlayers.filter((item) => {
-    return getAllClassIdsByType(ClassType.TANK).includes(item.class.key)
+    return getAllClassIdsByType(ClassType.TANK).includes(item.class.value)
   });
 
   const dpsPlayers = sortedPlayers.filter((item) => {
-    return getAllClassIdsByType(ClassType.DPS).includes(item.class.key)
+    return getAllClassIdsByType(ClassType.DPS).includes(item.class.value)
   });
 
   const magicDpsPlayers = sortedPlayers.filter((item) => {
-    return getAllClassIdsByType(ClassType.MAGIC_DPS).includes(item.class.key)
+    return getAllClassIdsByType(ClassType.MAGIC_DPS).includes(item.class.value)
   });
 
   const supportPlayers = sortedPlayers.filter((item) => {
-    return getAllClassIdsByType(ClassType.SUPPORT).includes(item.class.key)
+    return getAllClassIdsByType(ClassType.SUPPORT).includes(item.class.value)
   });
 
   const assignedPlayers = [];
@@ -101,7 +100,7 @@ function autoAssignPlayers(players) {
         assignedPlayers.push(shiftPlayer(dpsPlayers, teamIndex, teamType));
         ++assignedCount;
       }
-      console.log(assignedCount)
+
     } while (assignedCount < 4 && assignedCount >= players.length)
   };
 
