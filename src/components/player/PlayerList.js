@@ -1,4 +1,16 @@
+/* eslint react/prop-types: 0 */
+
 import React from "react";
+
+import {
+    ExportOutlined,
+    ImportOutlined,
+    PlusOutlined,
+    SolutionOutlined,
+    SortAscendingOutlined,
+    SortDescendingOutlined,
+} from '@ant-design/icons';
+
 import {Button, Col, Divider, Empty, message, Row, Upload} from "antd";
 import {PlayerInputForm} from "./PlayerInputForm";
 import {connect} from "react-redux";
@@ -144,12 +156,12 @@ class PlayerList extends React.Component {
         return (
             <Row gutter={8}>
                 <Col span={12}>
-                    <Button type="primary" icon="plus" shape="round"
+                    <Button type="primary" icon={<PlusOutlined />} shape="round"
                             onClick={this.openPlayerInputForm}>Add</Button>
                 </Col>
                 <Col span={12}>
                     <Upload {...fileUploadProps}>
-                        <Button type="primary" icon="import" shape="round">Import</Button>
+                        <Button type="primary" icon={<ImportOutlined />} shape="round">Import</Button>
                     </Upload>
                 </Col>
             </Row>
@@ -176,10 +188,10 @@ class PlayerList extends React.Component {
             ));
             additionalActions =
                 <Col>
-                    <Button type="default" icon="sort-ascending" onClick={this.sortPlayersAscending}/>
-                    <Button type="default" icon="sort-descending" onClick={this.sortPlayersDescending}/>
-                    <Button type="default" icon="solution" onClick={this.autoAssign}/>
-                    <Button type="default" icon="export" onClick={this.exportData}>Export to CSV</Button>
+                    <Button type="default" icon={<SortAscendingOutlined />} onClick={this.sortPlayersAscending}/>
+                    <Button type="default" icon={<SortDescendingOutlined />} onClick={this.sortPlayersDescending}/>
+                    <Button type="default" icon={<SolutionOutlined />} onClick={this.autoAssign}/>
+                    <Button type="default" icon={<ExportOutlined />} onClick={this.exportData}>Export to CSV</Button>
                 </Col>
         } else {
             players =
@@ -209,7 +221,7 @@ class PlayerList extends React.Component {
     }
 
 
-};
+}
 
 export default connect(mapStateToProps, {
     openForm,

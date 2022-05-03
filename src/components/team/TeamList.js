@@ -1,5 +1,7 @@
+/* eslint react/prop-types: 0 */
+
 import React from "react";
-import {Col, Row} from "antd";
+import {Col, Divider, Row} from "antd";
 import {getAllPlayers, getPlayersByTeamIndex, getPlayersByTeamType} from "../../selector";
 import {connect} from "react-redux";
 import {TeamCard} from "./TeamCard";
@@ -54,25 +56,22 @@ class TeamList extends React.Component {
 
     renderInColumns(defenseTeamTemplates, eliteTeamTemplates, attackTeamTemplates) {
         return (
-            <Row gutter={16}
-                 type="flex"
-                 justify="space-around"
-                 align="top">
+            <Row>
                 <Col span={9}>
                     <h3>Defense</h3>
-                    <Row gutter={16}>
+                    <Row>
                         {this.renderTeam(defenseTeamTemplates)}
                     </Row>
                 </Col>
                 <Col span={6}>
                     <h3>Elite</h3>
-                    <Row gutter={16}>
+                    <Row>
                         {this.renderTeam(eliteTeamTemplates)}
                     </Row>
                 </Col>
                 <Col span={9}>
                     <h3>Attack</h3>
-                    <Row gutter={16}>
+                    <Row>
                         {this.renderTeam(attackTeamTemplates)}
                     </Row>
                 </Col>
@@ -82,21 +81,14 @@ class TeamList extends React.Component {
 
     renderInRows(defenseTeamTemplates, eliteTeamTemplates, attackTeamTemplates) {
         return (
-            <Row gutter={16}
-                 type="flex"
-                 justify="space-around"
-                 align="top">
-                <Col>
-                    <h3>Defense</h3>
-                    {this.renderTeam(defenseTeamTemplates)}
-
-                    <h3>Elite</h3>
-                    {this.renderTeam(eliteTeamTemplates)}
-
-                    <h3>Attack</h3>
-                    {this.renderTeam(attackTeamTemplates)}
-                </Col>
-            </Row>
+            <>
+                <Divider><h2>Defense</h2></Divider>
+                <Row>{this.renderTeam(defenseTeamTemplates)}</Row>
+                <Divider><h2>Elite</h2></Divider>
+                <Row>{this.renderTeam(eliteTeamTemplates)}</Row>
+                <Divider><h2>Attack</h2></Divider>
+                <Row>{this.renderTeam(attackTeamTemplates)}</Row>
+            </>
         )
     }
 
@@ -113,11 +105,11 @@ class TeamList extends React.Component {
             eliteTeamTemplates = this.buildTeamTemplateByType(this.props.players, TeamType.ELITE, 1);
         }
 
-        let displayType = (this.props.display && this.props.display === TEAM_LIST_DISPLAY_IN_COL)
-            ? this.renderInColumns(defenseTeamTemplates, eliteTeamTemplates, attackTeamTemplates)
-            : this.renderInRows(defenseTeamTemplates, eliteTeamTemplates, attackTeamTemplates);
+        // let displayType = (this.props.display && this.props.display === TEAM_LIST_DISPLAY_IN_COL)
+        //     ? this.renderInColumns(defenseTeamTemplates, eliteTeamTemplates, attackTeamTemplates)
+        //     : this.renderInRows(defenseTeamTemplates, eliteTeamTemplates, attackTeamTemplates);
 
-        // let displayType = this.renderInRows(defenseTeamTemplates, eliteTeamTemplates, attackTeamTemplates);
+        let displayType = this.renderInRows(defenseTeamTemplates, eliteTeamTemplates, attackTeamTemplates);
         return (
             displayType
         )

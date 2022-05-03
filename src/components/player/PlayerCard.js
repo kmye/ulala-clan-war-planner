@@ -1,4 +1,6 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import { CheckOutlined, DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import {
   Button, Card, Col, Popconfirm, Row, Tag,
 } from 'antd';
@@ -20,8 +22,8 @@ export function PlayerCard(props) {
   };
 
   const [{ isDragging }, drag] = useDrag({
+    type: ItemTypes.PLAYER,
     item: {
-      type: ItemTypes.PLAYER,
       playerObject: props.value,
     },
     collect: (monitor) => ({
@@ -30,7 +32,7 @@ export function PlayerCard(props) {
   });
 
   const assignedIcon = props.value.teamIndex != null
-    ? <Button type="dashed" icon="check" onClick={onUnassignedPlayerClick} /> : '';
+    ? <Button type="dashed" icon={<CheckOutlined />} onClick={onUnassignedPlayerClick} /> : '';
 
   let actions = '';
 
@@ -38,7 +40,7 @@ export function PlayerCard(props) {
     actions = (
       <span>
         {assignedIcon}
-        <Button type="dashed" icon="edit" onClick={onUpdatePlayerClick} />
+        <Button type="dashed" icon={<EditOutlined />} onClick={onUpdatePlayerClick} />
         <Popconfirm
           title="Are you sure delete this record?"
           onConfirm={onDeletePlayerClick}
@@ -47,7 +49,7 @@ export function PlayerCard(props) {
           okText="Yes"
           cancelText="No"
         >
-          <Button type="dashed" icon="delete" />
+          <Button type="dashed" icon={<DeleteOutlined />} />
         </Popconfirm>
       </span>
     );
@@ -84,3 +86,11 @@ export function PlayerCard(props) {
     </div>
   );
 }
+
+PlayerCard.propTypes = {
+  onUpdatePlayerClick: PropTypes.func,
+  onUnassignPlayerClick: PropTypes.func,
+  onDeletePlayerClick: PropTypes.func,
+  value: PropTypes.any,
+  shouldRenderActions: PropTypes.bool,
+};

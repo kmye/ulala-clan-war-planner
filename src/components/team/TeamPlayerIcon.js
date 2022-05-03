@@ -1,5 +1,8 @@
+/* eslint react/prop-types: 0 */
+
 import React from 'react';
-import { Col, Icon, Popover } from 'antd';
+import { QuestionOutlined, SmileOutlined } from '@ant-design/icons';
+import { Col, Popover } from 'antd';
 import { useDrag } from 'react-dnd';
 import { PlayerCard } from '../player/PlayerCard';
 import { ItemTypes } from '../../constants/drag_item_types';
@@ -10,8 +13,8 @@ export function TeamPlayerIcon(props) {
   const { player } = props;
 
   const [{ isDragging }, drag] = useDrag({
+    type: ItemTypes.PLAYER,
     item: {
-      type: ItemTypes.PLAYER,
       playerObject: player,
     },
     collect: (monitor) => ({
@@ -39,7 +42,7 @@ export function TeamPlayerIcon(props) {
           content={popoverContent}
           trigger="hover"
         >
-          <Icon style={{ color: playerColor }} type="smile" />
+          <SmileOutlined style={{ color: playerColor }} />
           {' '}
           {player.playerIndex + 1}
           <p>{player.name}</p>
@@ -47,7 +50,7 @@ export function TeamPlayerIcon(props) {
       </div>
     );
   } else {
-    playerRepresentation = <Icon type="question" />;
+    playerRepresentation = <QuestionOutlined />;
   }
 
   return (

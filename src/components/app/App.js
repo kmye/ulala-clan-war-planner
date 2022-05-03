@@ -4,7 +4,7 @@ import 'antd/dist/antd.css';
 import { connect } from 'react-redux';
 import { Layout } from 'antd';
 import { DndProvider } from 'react-dnd';
-import HTML5Backend from 'react-dnd-html5-backend';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 import PlayerList from '../player/PlayerList';
 import TeamList from '../team/TeamList';
 
@@ -26,7 +26,6 @@ function App() {
             height: '100vh',
             position: 'fixed',
             left: 0,
-
           }}
         >
           <PlayerList />
@@ -37,7 +36,6 @@ function App() {
           height: '100vh',
         }}
         >
-
           <Header className="header" style={{ background: 'antiquewhite' }}><h2>Ulala Clan War Planner</h2></Header>
 
           <Content style={{
@@ -47,14 +45,10 @@ function App() {
             overflow: 'auto',
           }}
           >
-
             <TeamList />
-
           </Content>
-
           <Footer className="custom-footer">Developed by kmye ©2021</Footer>
         </Layout>
-
       </Layout>
     </DndProvider>
 

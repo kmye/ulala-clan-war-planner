@@ -1,5 +1,9 @@
+/* eslint react/prop-types: 0 */
+
 import React from "react";
-import {Form, Input, InputNumber, Select} from 'antd';
+import { Form } from '@ant-design/compatible';
+import '@ant-design/compatible/assets/index.css';
+import { Input, InputNumber, Select } from 'antd';
 import Modal from "antd/lib/modal";
 import {connect} from "react-redux";
 
@@ -29,8 +33,7 @@ export const PlayerInputForm = Form.create({
 
     }
 })(
-    class extends React.Component {
-
+    class PlayerInputForm extends React.Component {
         onCancel = () => {
             const {onCancel} = this.props;
             onCancel();
@@ -61,6 +64,7 @@ export const PlayerInputForm = Form.create({
 
         render() {
 
+            // eslint-disable-next-line react/prop-types
             const {form} = this.props;
             const {getFieldDecorator} = form;
 
@@ -112,8 +116,12 @@ export const PlayerInputForm = Form.create({
             );
         }
     }
+
+
 );
 
-
 connect(mapStateToProps)(PlayerInputForm)
+
+
+
 
