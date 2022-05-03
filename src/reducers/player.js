@@ -16,16 +16,10 @@ function storePlayersInLocalStorage(players) {
   localStorage.setItem(PLAYER_MASTER, JSON.stringify(players));
 }
 
-function removePlayerFromArray(playerIndex, arrayList) {
-  let filtered = arrayList.filter(function (value, index) {
-    return index !== playerIndex;
+function removePlayerFromArray(player, arrayList) {
+  return arrayList.filter(function (value) {
+    return player.name !== value.name;
   });
-
-  // update all index
-  return filtered.map((item, index) => {
-    item.playerIndex = index;
-    return item;
-  })
 }
 
 function updatePlayerInArray(player, arrayList) {
@@ -168,11 +162,11 @@ export default (state = {}, action) => {
     }
 
     case PLAYER_DELETE: {
-      let filtered = removePlayerFromArray(action.payload.playerIndex, state.players);
-      storePlayersInLocalStorage(filtered);
+      const newPlayerList = removePlayerFromArray(action.payload.player, state.players);
+      storePlayersInLocalStorage(newPlayerList);
       return {
         ...state,
-        players: filtered
+        players: newPlayerList
       };
     }
 
@@ -186,7 +180,7 @@ export default (state = {}, action) => {
       };
 
     case PLAYER_AUTO_ASSIGN: {
-      let assignedPlayers = autoAssignPlayers(state.players);
+      const assignedPlayers = autoAssignPlayers(state.players);
       storePlayersInLocalStorage(assignedPlayers);
       return {
         ...state,
@@ -197,7 +191,7 @@ export default (state = {}, action) => {
       let player = action.payload.player;
       player.teamIndex = null;
       player.teamType = null;
-      let updatedArray = updatePlayerInArray(player, state.players);
+      const updatedArray = updatePlayerInArray(player, state.players);
       storePlayersInLocalStorage(updatedArray);
       return {
         ...state,

@@ -31,10 +31,10 @@ export const updatePlayer = (player) => ({
   },
 });
 
-export const deletePlayer = (playerIndex) => ({
+export const deletePlayer = (player) => ({
   type: PLAYER_DELETE,
   payload: {
-    playerIndex,
+    player,
   },
 });
 

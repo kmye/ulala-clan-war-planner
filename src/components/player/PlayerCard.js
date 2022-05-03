@@ -18,7 +18,7 @@ export function PlayerCard(props) {
   };
 
   const onDeletePlayerClick = () => {
-    props.onDeletePlayerClick(props.value.playerIndex);
+    props.onDeletePlayerClick(props.value);
   };
 
   const [{ isDragging }, drag] = useDrag({

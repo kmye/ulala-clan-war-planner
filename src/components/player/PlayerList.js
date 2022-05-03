@@ -66,8 +66,8 @@ class PlayerList extends React.Component {
         this.props.unassignPlayer(player);
     }
 
-    deletePlayerClick = (playerIndex) => {
-        this.props.deletePlayer(playerIndex)
+    deletePlayerClick = (player) => {
+        this.props.deletePlayer(player)
     };
 
     sortPlayersAscending = () => {
