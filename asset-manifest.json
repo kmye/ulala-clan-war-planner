@@ -1,17 +1,13 @@
 {
   "files": {
-    "main.css": "/ulala-clan-war-planner/static/css/main.94bf3e33.chunk.css",
-    "main.js": "/ulala-clan-war-planner/static/js/main.a44ff2a2.chunk.js",
-    "main.js.map": "/ulala-clan-war-planner/static/js/main.a44ff2a2.chunk.js.map",
-    "runtime-main.js": "/ulala-clan-war-planner/static/js/runtime-main.916f42a7.js",
-    "runtime-main.js.map": "/ulala-clan-war-planner/static/js/runtime-main.916f42a7.js.map",
-    "static/css/2.b6e3a137.chunk.css": "/ulala-clan-war-planner/static/css/2.b6e3a137.chunk.css",
-    "static/js/2.ff854639.chunk.js": "/ulala-clan-war-planner/static/js/2.ff854639.chunk.js",
-    "static/js/2.ff854639.chunk.js.map": "/ulala-clan-war-planner/static/js/2.ff854639.chunk.js.map",
+    "main.css": "/ulala-clan-war-planner/static/css/main.3362ceb6.css",
+    "main.js": "/ulala-clan-war-planner/static/js/main.737effdf.js",
     "index.html": "/ulala-clan-war-planner/index.html",
-    "precache-manifest.4fd754cc107e4172a9201de0cb7b13b5.js": "/ulala-clan-war-planner/precache-manifest.4fd754cc107e4172a9201de0cb7b13b5.js",
-    "service-worker.js": "/ulala-clan-war-planner/service-worker.js",
-    "static/css/2.b6e3a137.chunk.css.map": "/ulala-clan-war-planner/static/css/2.b6e3a137.chunk.css.map",
-    "static/css/main.94bf3e33.chunk.css.map": "/ulala-clan-war-planner/static/css/main.94bf3e33.chunk.css.map"
-  }
+    "main.3362ceb6.css.map": "/ulala-clan-war-planner/static/css/main.3362ceb6.css.map",
+    "main.737effdf.js.map": "/ulala-clan-war-planner/static/js/main.737effdf.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.3362ceb6.css",
+    "static/js/main.737effdf.js"
+  ]
 }
